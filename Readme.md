@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
-* Студент: [Павел](https://up.htmlacademy.ru/javascript/22/user/1573235).
-* Наставник: `Неизвестно`.
+* Студент: [Раевский Павел](https://up.htmlacademy.ru/javascript/22/user/1573235).
+* Наставник: [Евгений Алипкин](https://htmlacademy.ru/profile/ealipkin).
 
 ---
 
