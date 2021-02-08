@@ -1,15 +1,7 @@
 'use strict';
 
-const AVATAR_IMAGE_COUNTER = [
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-];
+const AVATARS_COUNT = 8;
+const AVATAR_NAMES = new Array(AVATARS_COUNT).fill().map((item, index) => `${index + 1}`.padStart(2, 0));
 const TITLE_AD = 'Уютное и невероятно комфортное жильё в самом в центре города';
 const TYPES = [
   'palace',
@@ -17,17 +9,12 @@ const TYPES = [
   'house',
   'bungalow',
 ];
-const EXAMPLES_CHECKIN_TIME = [
+const TIME = [
   '12:00',
   '13:00',
   '14:00',
 ];
-const EXAMPLES_CHECKOUT_TIME = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
-const ALL_FEATURES = [
+const AVAILABLE_FEATURES = [
   'wifi',
   'dishwasher',
   'parking',
@@ -64,7 +51,7 @@ const getArrayRendomLength = function(elements) {
 
 const createAuthor = () => {
   return {
-    avatar: 'img/avatars/user' + getRandomArrayElement(AVATAR_IMAGE_COUNTER) + '.png',
+    avatar: 'img/avatars/user' + getRandomArrayElement(AVATAR_NAMES) + '.png',
   };
 };
 
@@ -83,9 +70,9 @@ const createOffer = () => {
     type: getRandomArrayElement(TYPES),
     rooms: getRandomNumberFloat(MIN_NUMBER, MAX_NUMBER),
     guests: getRandomNumberFloat(MIN_NUMBER, MAX_NUMBER),
-    checkin: getRandomArrayElement(EXAMPLES_CHECKIN_TIME),
-    checkout: getRandomArrayElement(EXAMPLES_CHECKOUT_TIME),
-    features: getArrayRendomLength(ALL_FEATURES),
+    checkin: getRandomArrayElement(TIME),
+    checkout: getRandomArrayElement(TIME),
+    features: getArrayRendomLength(AVAILABLE_FEATURES),
     description: DESCRIPTION,
     photos: getArrayRendomLength(PROPERTY_PHOTOS),
   };
