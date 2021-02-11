@@ -35,7 +35,6 @@ const LOCATION_Y_MAX = 139.80000;
 const MIN_NUMBER = 0;
 const MAX_NUMBER = 1000000;
 const LOCATION_FLOAT = 5;
-const SIMILAR_AD_COUNT = 10;
 
 const createAuthor = () => {
   return {
@@ -78,6 +77,4 @@ const createAd = () => {
   };
 };
 
-const similarAds = new Array(SIMILAR_AD_COUNT).fill(null).map(() => createAd());
-
-similarAds;
+export {createAd};
