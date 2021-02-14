@@ -1,4 +1,4 @@
-import {getRandomArrayElement, getRandomNumberFloat, getArrayRendomLength} from './utils.js';
+import {getRandomArrayElement, getRandomNumberFloat, getArrayRendomLength} from './util.js';
 
 const AVATARS_COUNT = 8;
 const AVATAR_NAMES = new Array(AVATARS_COUNT).fill().map((item, index) => `${index + 1}`.padStart(2, 0));
