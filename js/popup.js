@@ -1,7 +1,7 @@
-import {createAd} from './data.js';
+import {offersLabelsMap} from './data.js';
 
-const map = document.querySelector('.map__canvas');
-const adTemplate = document.querySelector('#card').content.querySelector('.popup');
+const PHOTO_WIDTH = 45;
+const PHOTO_HEIGHT = 40;
 
 const createFeaturesFragment = (featuresArray) => {
   const fragment = document.createDocumentFragment();
@@ -18,8 +18,8 @@ const createPhotosFragment = (photoSrcArray) => {
   photoSrcArray.forEach((photoSrc) => {
     const item = document.createElement('img');
     item.className = 'popup__photo';
-    item.width = 45;
-    item.height = 40;
+    item.width = PHOTO_WIDTH;
+    item.height = PHOTO_HEIGHT;
     item.alt = 'Фотография жилья';
     item.src = photoSrc;
     fragment.appendChild(item);
@@ -28,6 +28,7 @@ const createPhotosFragment = (photoSrcArray) => {
 };
 
 const createSimilarAd = (element) => {
+  const adTemplate = document.querySelector('#card').content.querySelector('.popup');
   const adElement = adTemplate.cloneNode(true);
   const popupTitle = adElement.querySelector('.popup__title');
   const popupTextAddress = adElement.querySelector('.popup__text--address');
@@ -40,40 +41,59 @@ const createSimilarAd = (element) => {
   const popupPhotos = adElement.querySelector('.popup__photos');
   const popupAvatar = adElement.querySelector('.popup__avatar');
 
-  popupTitle.textContent = element.offer.title;
-  popupTextAddress.textContent = element.offer.address;
-  popupTextPrice.textContent = `${element.offer.price} ₽/ночь`;
-  popupTextСapacity.textContent = `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`;
-  popupTextTime.textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
-  popupDescription.textContent = element.offer.description;
-  popupAvatar.src = element.author.avatar;
-
-  switch (element.offer.type) {
-    case 'flat':
-      popupType.textContent = 'Квартира';
-      break
-    case 'bungalow':
-      popupType.textContent = 'Бунгало';
-      break
-    case 'house':
-      popupType.textContent = 'Дом';
-      break
-    case 'palace':
-      popupType.textContent = 'Дом';
-      break
+  if (element.offer.title) {
+    popupTitle.textContent = element.offer.title;
+  } else {
+    popupTitle.remove();
   }
 
-  popupFeatures.innerHTML = '';
-  const featuresFragment = createFeaturesFragment(element.offer.features);
-  popupFeatures.appendChild(featuresFragment);
+  if (element.offer.address) {
+    popupTextAddress.textContent = element.offer.address;
+  } else {
+    popupTextAddress.remove();
+  }
 
-  popupPhotos.innerHTML = '';
-  const photosFragment = createPhotosFragment(element.offer.photos);
-  popupPhotos.appendChild(photosFragment);
+  if (element.offer.price) {
+    popupTextPrice.textContent = `${element.offer.price} ₽/ночь`;
+  } else {
+    popupTextPrice.remove();
+  }
 
-  map.appendChild(adElement);
+  if (element.offer.description) {
+    popupDescription.textContent = element.offer.description;
+  } else {
+    popupDescription.remove();
+  }
+
+  if (element.author.avatar) {
+    popupAvatar.src = element.author.avatar;
+  } else {
+    popupAvatar.remove();
+  }
+
+  if (element.offer.features) {
+    popupFeatures.innerHTML = '';
+    const featuresFragment = createFeaturesFragment(element.offer.features);
+    popupFeatures.appendChild(featuresFragment);
+  } else {
+    popupFeatures.remove();
+  }
+
+  if (element.offer.photos) {
+    popupPhotos.innerHTML = '';
+    const photosFragment = createPhotosFragment(element.offer.photos);
+    popupPhotos.appendChild(photosFragment);
+  } else {
+    popupPhotos.remove();
+  }
+
+  popupTextСapacity.textContent = `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`;
+  popupTextTime.textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
+
+  const label = offersLabelsMap[element.offer.type];
+  popupType.textContent = label;
+
+  return adElement;
 };
 
-const similarAd = createSimilarAd(createAd());
-
-export {similarAd};
+export {createSimilarAd};
