@@ -3,12 +3,6 @@ import {getRandomArrayElement, getRandomNumberFloat, getArrayRendomLength} from 
 const AVATARS_COUNT = 8;
 const AVATAR_NAMES = new Array(AVATARS_COUNT).fill().map((item, index) => `${index + 1}`.padStart(2, 0));
 const TITLE_AD = 'Уютное и невероятно комфортное жильё в самом в центре города';
-const TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-];
 const TIME = [
   '12:00',
   '13:00',
@@ -34,7 +28,19 @@ const LOCATION_Y_MIN = 139.70000;
 const LOCATION_Y_MAX = 139.80000;
 const MIN_NUMBER = 0;
 const MAX_NUMBER = 1000000;
+const MIN_ROOMS_NUMBER = 1;
+const MAX_ROOMS_NUMBER = 3;
+const MIN_GUESTS_NUMBER = 1;
+const MAX_GUESTS_NUMBER = 3;
 const LOCATION_FLOAT = 5;
+
+const offersLabelsMap = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalow': 'Бунгало',
+};
+const offerTypes = Object.keys(offersLabelsMap);
 
 const createAuthor = () => {
   return {
@@ -54,9 +60,9 @@ const createOffer = () => {
     title: TITLE_AD,
     address: '',
     price: getRandomNumberFloat(MIN_NUMBER, MAX_NUMBER),
-    type: getRandomArrayElement(TYPES),
-    rooms: getRandomNumberFloat(MIN_NUMBER, MAX_NUMBER),
-    guests: getRandomNumberFloat(MIN_NUMBER, MAX_NUMBER),
+    type: getRandomArrayElement(offerTypes),
+    rooms: getRandomNumberFloat(MIN_ROOMS_NUMBER, MAX_ROOMS_NUMBER),
+    guests: getRandomNumberFloat(MIN_GUESTS_NUMBER, MAX_GUESTS_NUMBER),
     checkin: getRandomArrayElement(TIME),
     checkout: getRandomArrayElement(TIME),
     features: getArrayRendomLength(AVAILABLE_FEATURES),
@@ -77,4 +83,4 @@ const createAd = () => {
   };
 };
 
-export {createAd};
+export {createAd, offersLabelsMap};
