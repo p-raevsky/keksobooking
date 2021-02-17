@@ -1,25 +1,13 @@
+import {offersLabelsMap} from './data.js';
+
 const propertyTypeElement = document.querySelector('#type');
 const priceForNightElement = document.querySelector('#price');
 
 const selectChangeTypeHandler = () => {
-  switch (propertyTypeElement.value) {
-    case 'bungalow':
-      priceForNightElement.setAttribute('min', 0);
-      priceForNightElement.setAttribute('placeholder', 0);
-      break
-    case 'flat':
-      priceForNightElement.setAttribute('min', 1000);
-      priceForNightElement.setAttribute('placeholder', 1000);
-      break
-    case 'house':
-      priceForNightElement.setAttribute('min', 5000);
-      priceForNightElement.setAttribute('placeholder', 5000);
-      break
-    case 'palace':
-      priceForNightElement.setAttribute('min', 10000);
-      priceForNightElement.setAttribute('placeholder', 10000);
-      break
-  }
+  const offerType = propertyTypeElement.value;
+  const offerPriceLabel = offersLabelsMap[offerType].price;
+  priceForNightElement.setAttribute('min', offerPriceLabel);
+  priceForNightElement.setAttribute('placeholder', offerPriceLabel);
 };
 
 propertyTypeElement.addEventListener('change', selectChangeTypeHandler);

@@ -35,10 +35,22 @@ const MAX_GUESTS_NUMBER = 3;
 const LOCATION_FLOAT = 5;
 
 const offersLabelsMap = {
-  'palace': 'Дворец',
-  'flat': 'Квартира',
-  'house': 'Дом',
-  'bungalow': 'Бунгало',
+  'palace': {
+    label: 'Дворец',
+    price: 10000,
+  },
+  'flat': {
+    label: 'Квартира',
+    price: 1000,
+  },
+  'house': {
+    label: 'Дом',
+    price: 5000,
+  },
+  'bungalow': {
+    label: 'Бунгало',
+    price: 0,
+  },
 };
 const offerTypes = Object.keys(offersLabelsMap);
 
