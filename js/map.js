@@ -1,8 +1,20 @@
-const map = L.map('#map__canvas')
+/* global L:readonly */
+
+import {makesActiveFormHandler} from './form.js';
+
+const centerPointCoordinates = {
+  lat: 35.68169,
+  lng: 139.76846,
+}
+
+const map = L.map('map-canvas')
+  .on('load', () => {
+    makesActiveFormHandler();
+  })
   .setView({
-    lat: 59.92749,
-    lng: 30.31127,
-  }, 10);
+    lat: centerPointCoordinates.lat,
+    lng: centerPointCoordinates.lng,
+  }, 10)
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

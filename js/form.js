@@ -69,3 +69,29 @@ const makesInactiveFormHandler = () => {
 };
 
 document.addEventListener('DOMContentLoaded', makesInactiveFormHandler);
+
+const makesActiveFormHandler = () => {
+  mapFilterElement.classList.remove('map__filters--disabled');
+  typeFilterElement.disabled = false;
+  priceFilterElement.disabled = false;
+  roomsFilterElement.disabled = false;
+  guestsFilterElement.disabled = false;
+  featuresFilterElement.disabled = false;
+
+  adFormElement.classList.remove('ad-form--disabled');
+  titleFormElement.disabled = false;
+  adFormHeaderElement.disabled = false;
+  addressFormElement.disabled = false;
+  propertyTypeFormElement.disabled = false;
+  priceFormElement.disabled = false;
+  timeInFormElement.disabled = false;
+  timeOutFormElement.disabled = false;
+  roomNumberFormElement.disabled = false;
+  capacityRoomFormElement.disabled = false;
+  featuresFormElement.disabled = false;
+  descriptionFormElement.disabled = false;
+  imagesFormElement.disabled = false;
+  submitFormElement.disabled = false;
+};
+
+export {makesActiveFormHandler};
