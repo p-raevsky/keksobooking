@@ -1,27 +1,13 @@
 import {offersLabelsMap} from './data.js';
 
 const mapFilterElement = document.querySelector('.map__filters');
-const typeFilterElement = mapFilterElement.querySelector('#housing-type');
-const priceFilterElement = mapFilterElement.querySelector('#housing-price');
-const roomsFilterElement = mapFilterElement.querySelector('#housing-rooms');
-const guestsFilterElement = mapFilterElement.querySelector('#housing-guests');
-const featuresFilterElement = mapFilterElement.querySelector('#housing-features');
-
-
 const adFormElement = document.querySelector('.ad-form');
-const adFormHeaderElement = adFormElement.querySelector('.ad-form-header');
-const titleFormElement = adFormElement.querySelector('#title');
-const addressFormElement = adFormElement.querySelector('#address');
+const allFildsetsElement = document.querySelectorAll('fieldset');
+const allSelectsFilterElement = mapFilterElement.querySelectorAll('select');
 const propertyTypeFormElement = adFormElement.querySelector('#type');
 const priceFormElement = adFormElement.querySelector('#price');
 const timeInFormElement = adFormElement.querySelector('#timein');
 const timeOutFormElement = adFormElement.querySelector('#timeout');
-const roomNumberFormElement = adFormElement.querySelector('#room_number');
-const capacityRoomFormElement = adFormElement.querySelector('#capacity');
-const featuresFormElement = adFormElement.querySelector('.features');
-const descriptionFormElement = adFormElement.querySelector('#description');
-const imagesFormElement = adFormElement.querySelector('#images');
-const submitFormElement = adFormElement.querySelector('.ad-form__element--submit');
 
 const selectChangeTypeHandler = () => {
   const offerType = propertyTypeFormElement.value;
@@ -44,54 +30,34 @@ timeOutFormElement.addEventListener('change', () => {
   return selectChangeTimeHandler(timeInFormElement, timeOutFormElement);
 });
 
-const makesInactiveFormHandler = () => {
-  mapFilterElement.classList.add('map__filters--disabled');
-  typeFilterElement.disabled = true;
-  priceFilterElement.disabled = true;
-  roomsFilterElement.disabled = true;
-  guestsFilterElement.disabled = true;
-  featuresFilterElement.disabled = true;
-
-  adFormElement.classList.add('ad-form--disabled');
-  titleFormElement.disabled = true;
-  adFormHeaderElement.disabled = true;
-  addressFormElement.disabled = true;
-  propertyTypeFormElement.disabled = true;
-  priceFormElement.disabled = true;
-  timeInFormElement.disabled = true;
-  timeOutFormElement.disabled = true;
-  roomNumberFormElement.disabled = true;
-  capacityRoomFormElement.disabled = true;
-  featuresFormElement.disabled = true;
-  descriptionFormElement.disabled = true;
-  imagesFormElement.disabled = true;
-  submitFormElement.disabled = true;
+const getDisabledElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = true;
+  });
 };
 
-document.addEventListener('DOMContentLoaded', makesInactiveFormHandler);
+const getEnabledElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = false;
+  });
+};
+
+const makesInactiveFormHandler = () => {
+  mapFilterElement.classList.add('map__filters--disabled');
+  adFormElement.classList.add('ad-form--disabled');
+
+  getDisabledElements(allFildsetsElement);
+  getDisabledElements(allSelectsFilterElement);
+};
+
+makesInactiveFormHandler();
 
 const makesActiveFormHandler = () => {
   mapFilterElement.classList.remove('map__filters--disabled');
-  typeFilterElement.disabled = false;
-  priceFilterElement.disabled = false;
-  roomsFilterElement.disabled = false;
-  guestsFilterElement.disabled = false;
-  featuresFilterElement.disabled = false;
-
   adFormElement.classList.remove('ad-form--disabled');
-  titleFormElement.disabled = false;
-  adFormHeaderElement.disabled = false;
-  addressFormElement.disabled = false;
-  propertyTypeFormElement.disabled = false;
-  priceFormElement.disabled = false;
-  timeInFormElement.disabled = false;
-  timeOutFormElement.disabled = false;
-  roomNumberFormElement.disabled = false;
-  capacityRoomFormElement.disabled = false;
-  featuresFormElement.disabled = false;
-  descriptionFormElement.disabled = false;
-  imagesFormElement.disabled = false;
-  submitFormElement.disabled = false;
+
+  getEnabledElements(allFildsetsElement);
+  getEnabledElements(allSelectsFilterElement);
 };
 
 export {makesActiveFormHandler};
