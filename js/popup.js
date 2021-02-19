@@ -90,7 +90,7 @@ const createSimilarAd = (element) => {
   popupTextСapacity.textContent = `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`;
   popupTextTime.textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
 
-  const label = offersLabelsMap[element.offer.type];
+  const label = offersLabelsMap[element.offer.type].label;
   popupType.textContent = label;
 
   return adElement;

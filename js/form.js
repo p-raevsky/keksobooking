@@ -1,40 +1,63 @@
-const propertyTypeElement = document.querySelector('#type');
-const priceForNightElement = document.querySelector('#price');
+import {offersLabelsMap} from './data.js';
+
+const mapFilterElement = document.querySelector('.map__filters');
+const adFormElement = document.querySelector('.ad-form');
+const allFildsetsElement = document.querySelectorAll('fieldset');
+const allSelectsFilterElement = mapFilterElement.querySelectorAll('select');
+const propertyTypeFormElement = adFormElement.querySelector('#type');
+const priceFormElement = adFormElement.querySelector('#price');
+const timeInFormElement = adFormElement.querySelector('#timein');
+const timeOutFormElement = adFormElement.querySelector('#timeout');
 
 const selectChangeTypeHandler = () => {
-  switch (propertyTypeElement.value) {
-    case 'bungalow':
-      priceForNightElement.setAttribute('min', 0);
-      priceForNightElement.setAttribute('placeholder', 0);
-      break
-    case 'flat':
-      priceForNightElement.setAttribute('min', 1000);
-      priceForNightElement.setAttribute('placeholder', 1000);
-      break
-    case 'house':
-      priceForNightElement.setAttribute('min', 5000);
-      priceForNightElement.setAttribute('placeholder', 5000);
-      break
-    case 'palace':
-      priceForNightElement.setAttribute('min', 10000);
-      priceForNightElement.setAttribute('placeholder', 10000);
-      break
-  }
+  const offerType = propertyTypeFormElement.value;
+  const offerPriceLabel = offersLabelsMap[offerType].price;
+  priceFormElement.setAttribute('min', offerPriceLabel);
+  priceFormElement.setAttribute('placeholder', offerPriceLabel);
 };
 
-propertyTypeElement.addEventListener('change', selectChangeTypeHandler);
-
-const timeInElement = document.querySelector('#timein');
-const timeOutElement = document.querySelector('#timeout');
+propertyTypeFormElement.addEventListener('change', selectChangeTypeHandler);
 
 const selectChangeTimeHandler = (firstTimeElement, secondTimeElement) => {
   firstTimeElement.value = secondTimeElement.value;
 };
 
-timeInElement.addEventListener('change', () => {
-  return selectChangeTimeHandler(timeOutElement, timeInElement);
+timeInFormElement.addEventListener('change', () => {
+  return selectChangeTimeHandler(timeOutFormElement, timeInFormElement);
 });
 
-timeOutElement.addEventListener('change', () => {
-  return selectChangeTimeHandler(timeInElement, timeOutElement);
+timeOutFormElement.addEventListener('change', () => {
+  return selectChangeTimeHandler(timeInFormElement, timeOutFormElement);
 });
+
+const getDisabledElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = true;
+  });
+};
+
+const getEnabledElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = false;
+  });
+};
+
+const makesInactiveFormHandler = () => {
+  mapFilterElement.classList.add('map__filters--disabled');
+  adFormElement.classList.add('ad-form--disabled');
+
+  getDisabledElements(allFildsetsElement);
+  getDisabledElements(allSelectsFilterElement);
+};
+
+makesInactiveFormHandler();
+
+const makesActiveFormHandler = () => {
+  mapFilterElement.classList.remove('map__filters--disabled');
+  adFormElement.classList.remove('ad-form--disabled');
+
+  getEnabledElements(allFildsetsElement);
+  getEnabledElements(allSelectsFilterElement);
+};
+
+export {makesActiveFormHandler};
