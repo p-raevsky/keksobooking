@@ -1,63 +1,74 @@
 import {offersLabelsMap} from './data.js';
 
-const mapFilterElement = document.querySelector('.map__filters');
-const adFormElement = document.querySelector('.ad-form');
-const allFildsetsElement = document.querySelectorAll('fieldset');
-const allSelectsFilterElement = mapFilterElement.querySelectorAll('select');
-const propertyTypeFormElement = adFormElement.querySelector('#type');
-const priceFormElement = adFormElement.querySelector('#price');
-const timeInFormElement = adFormElement.querySelector('#timein');
-const timeOutFormElement = adFormElement.querySelector('#timeout');
+const mapFilter = document.querySelector('.map__filters');
+const adForm = document.querySelector('.ad-form');
+const fildsets = document.querySelectorAll('fieldset');
+const selectsFilter = mapFilter.querySelectorAll('select');
+const propertyType = adForm.querySelector('#type');
+const priceType = adForm.querySelector('#price');
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+const addressFild = document.querySelector('#address');
 
-const selectChangeTypeHandler = () => {
-  const offerType = propertyTypeFormElement.value;
-  const offerPriceLabel = offersLabelsMap[offerType].price;
-  priceFormElement.setAttribute('min', offerPriceLabel);
-  priceFormElement.setAttribute('placeholder', offerPriceLabel);
+const updateCurentPinCoordinates = (x, y) => {
+  addressFild.value = `${x}, ${y}`;
 };
 
-propertyTypeFormElement.addEventListener('change', selectChangeTypeHandler);
+addressFild.setAttribute('readonly', true);
 
-const selectChangeTimeHandler = (firstTimeElement, secondTimeElement) => {
+const syncTypeAndPrice = () => {
+  const offerType = propertyType.value;
+  const offerPriceLabel = offersLabelsMap[offerType].price;
+  priceType.setAttribute('min', offerPriceLabel);
+  priceType.setAttribute('placeholder', offerPriceLabel);
+};
+
+syncTypeAndPrice();
+
+propertyType.addEventListener('change', () => {
+  syncTypeAndPrice();
+});
+
+const syncSelectTimes = (firstTimeElement, secondTimeElement) => {
   firstTimeElement.value = secondTimeElement.value;
 };
 
-timeInFormElement.addEventListener('change', () => {
-  return selectChangeTimeHandler(timeOutFormElement, timeInFormElement);
+timeIn.addEventListener('change', () => {
+  syncSelectTimes(timeOut, timeIn);
 });
 
-timeOutFormElement.addEventListener('change', () => {
-  return selectChangeTimeHandler(timeInFormElement, timeOutFormElement);
+timeOut.addEventListener('change', () => {
+  syncSelectTimes(timeIn, timeOut);
 });
 
-const getDisabledElements = (elements) => {
+const disableElements = (elements) => {
   elements.forEach((element) => {
     element.disabled = true;
   });
 };
 
-const getEnabledElements = (elements) => {
+const enableElements = (elements) => {
   elements.forEach((element) => {
     element.disabled = false;
   });
 };
 
-const makesInactiveFormHandler = () => {
-  mapFilterElement.classList.add('map__filters--disabled');
-  adFormElement.classList.add('ad-form--disabled');
+const deactivateForm = () => {
+  mapFilter.classList.add('map__filters--disabled');
+  adForm.classList.add('ad-form--disabled');
 
-  getDisabledElements(allFildsetsElement);
-  getDisabledElements(allSelectsFilterElement);
+  disableElements(fildsets);
+  disableElements(selectsFilter);
 };
 
-makesInactiveFormHandler();
+deactivateForm();
 
-const makesActiveFormHandler = () => {
-  mapFilterElement.classList.remove('map__filters--disabled');
-  adFormElement.classList.remove('ad-form--disabled');
+const activateForm = () => {
+  mapFilter.classList.remove('map__filters--disabled');
+  adForm.classList.remove('ad-form--disabled');
 
-  getEnabledElements(allFildsetsElement);
-  getEnabledElements(allSelectsFilterElement);
+  enableElements(fildsets);
+  enableElements(selectsFilter);
 };
 
-export {makesActiveFormHandler};
+export {activateForm, addressFild, updateCurentPinCoordinates};

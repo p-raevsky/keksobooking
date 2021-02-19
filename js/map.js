@@ -1,17 +1,16 @@
 /* global L:readonly */
 
-import {makesActiveFormHandler} from './form.js';
-import {createAd} from './data.js';
 import {createSimilarAd} from './popup.js';
+import {activateForm, updateCurentPinCoordinates} from './form.js';
 
 
 const FLOAT_NUMBER = 5;
-const SIMILAR_AD_COUNT = 10;
 
 const centerPointCoordinates = {
   lat: 35.68038,
   lng: 139.76906,
 };
+
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
   iconSize: [52, 52],
@@ -20,7 +19,7 @@ const mainPinIcon = L.icon({
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    makesActiveFormHandler();
+    activateForm();
   })
   .setView({
     lat: centerPointCoordinates.lat,
@@ -50,17 +49,13 @@ const marker = L.marker(
 
 marker.addTo(map);
 
-const addressFildFormElement = document.querySelector('#address');
-addressFildFormElement.value = `${centerPointCoordinates.lat}, ${centerPointCoordinates.lng}`;
-addressFildFormElement.setAttribute('readonly', true);
+updateCurentPinCoordinates(centerPointCoordinates['lat'], centerPointCoordinates['lng']);
 
-marker.on('moveend', (evt) => {
+marker.on('move', (evt) => {
   const x = evt.target.getLatLng().lat.toFixed(FLOAT_NUMBER);
   const y = evt.target.getLatLng().lng.toFixed(FLOAT_NUMBER);
-  addressFildFormElement.value = `${x}, ${y}`;
+  updateCurentPinCoordinates(x, y);
 });
-
-const similarAds = new Array(SIMILAR_AD_COUNT).fill().map(() => createAd());
 
 const createSimilarPin = (elements) => {
   elements.forEach((element) => {
@@ -91,4 +86,4 @@ const createSimilarPin = (elements) => {
   });
 };
 
-createSimilarPin(similarAds);
+export {createSimilarPin, centerPointCoordinates};
