@@ -1,3 +1,8 @@
+import './data.js';
+import './popup.js';
+import './form.js';
+import './map.js';
+
 import {createSimilarPin} from './map.js';
 import {createAd} from './data.js';
 
