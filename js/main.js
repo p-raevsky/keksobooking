@@ -1,13 +1,10 @@
-import './data.js';
 import './popup.js';
 import './form.js';
 import './map.js';
+import './api.js';
 
-import {createSimilarPin} from './map.js';
-import {createAd} from './data.js';
+import {createSimilarPins} from './map.js';
+import {getData} from './api.js';
+import {showAlert} from './util.js';
 
-const SIMILAR_AD_COUNT = 10;
-
-const similarAds = new Array(SIMILAR_AD_COUNT).fill().map(() => createAd());
-
-createSimilarPin(similarAds);
+getData(createSimilarPins, showAlert);

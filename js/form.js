@@ -1,8 +1,28 @@
-import {offersLabelsMap} from './data.js';
+import {isEscEvent} from './util.js';
+import {sendData} from './api.js';
 
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
 const MAX_VALUE_PRICE = 1000000;
+
+const offersLabelsMap = {
+  'palace': {
+    label: 'Дворец',
+    price: 10000,
+  },
+  'flat': {
+    label: 'Квартира',
+    price: 1000,
+  },
+  'house': {
+    label: 'Дом',
+    price: 5000,
+  },
+  'bungalow': {
+    label: 'Бунгало',
+    price: 0,
+  },
+};
 
 const mapFilter = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
@@ -19,6 +39,8 @@ const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const images = adForm.querySelector('#images');
+const adFormSubmit = adForm.querySelector('.ad-form__submit');
+const adFormReset =  adForm.querySelector('.ad-form__reset');
 
 const actionValue = 'https://22.javascript.pages.academy/keksobooking';
 
@@ -119,6 +141,81 @@ const activateForm = () => {
   enableElements(selectsFilter);
 };
 
+const onEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    closeSuccessMsg();
+  }
+};
+
+const closeSuccessMsg = () => {
+  const main = document.querySelector('main');
+  const successElement = document.querySelector('.success');
+
+  if (successElement) {
+    main.removeChild(successElement);
+  }
+
+  document.removeEventListener('keydown', onEscKeydown);
+};
+
+const closeErrorMsg = () => {
+  const main = document.querySelector('main');
+  const errorElement = document.querySelector('.error');
+
+  if (errorElement) {
+    main.removeChild(errorElement);
+  }
+
+  document.removeEventListener('keydown', onEscKeydown);
+};
+
+const setSuccessResult = () => {
+  const main = document.querySelector('main');
+  const successTemplate = document.querySelector('#success').content.querySelector('.success');
+  const successElement = successTemplate.cloneNode(true);
+
+  main.appendChild(successElement);
+
+  successElement.addEventListener('click', () => {
+    closeSuccessMsg();
+  })
+
+  document.addEventListener('keydown', onEscKeydown);
+};
+
+const setErrorResult = () => {
+  const main = document.querySelector('main');
+  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  const errorElement = errorTemplate.cloneNode(true);
+
+  main.appendChild(errorElement);
+
+  errorElement.addEventListener('click', () => {
+    closeErrorMsg();
+  })
+
+  document.addEventListener('keydown', onEscKeydown);
+};
+
+const setUserFormSubmit = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const formData = new FormData(evt.target);
+
+    sendData(
+      () => setSuccessResult(),
+      () => setErrorResult(),
+      formData,
+    );
+  });
+}
+
+adFormSubmit.addEventListener('click', () => {
+  setUserFormSubmit();
+});
+
 const initForm = () => {
   syncRoomsAndCapacity();
   syncTypeAndPrice();
@@ -128,4 +225,4 @@ const initForm = () => {
 
 initForm();
 
-export {activateForm, addressField, updateCurentPinCoordinates};
+export {activateForm, updateCurentPinCoordinates, setUserFormSubmit, offersLabelsMap};

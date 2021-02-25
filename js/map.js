@@ -57,7 +57,7 @@ marker.on('move', (evt) => {
   updateCurentPinCoordinates(x, y);
 });
 
-const createSimilarPin = (elements) => {
+const createSimilarPins = (elements) => {
   elements.forEach((element) => {
     const icon = L.icon({
       iconUrl: '../img/pin.svg',
@@ -67,8 +67,8 @@ const createSimilarPin = (elements) => {
 
     const marker = L.marker(
       {
-        lat: element.location.x,
-        lng: element.location.y,
+        lat: element.location.lat,
+        lng: element.location.lng,
       },
       {
         icon,
@@ -86,4 +86,4 @@ const createSimilarPin = (elements) => {
   });
 };
 
-export {createSimilarPin, centerPointCoordinates};
+export {createSimilarPins};
