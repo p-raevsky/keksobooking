@@ -19,7 +19,7 @@ const mainPinIcon = L.icon({
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    activateForm();
+    setTimeout(activateForm, 0);
   })
   .setView({
     lat: centerPointCoordinates.lat,
@@ -49,13 +49,15 @@ const marker = L.marker(
 
 marker.addTo(map);
 
-updateCurentPinCoordinates(centerPointCoordinates['lat'], centerPointCoordinates['lng']);
+const initMainPin = () => {
+  updateCurentPinCoordinates(centerPointCoordinates['lat'], centerPointCoordinates['lng']);
 
-marker.on('move', (evt) => {
-  const x = evt.target.getLatLng().lat.toFixed(FLOAT_NUMBER);
-  const y = evt.target.getLatLng().lng.toFixed(FLOAT_NUMBER);
-  updateCurentPinCoordinates(x, y);
-});
+  marker.on('move', (evt) => {
+    let x = evt.target.getLatLng().lat.toFixed(FLOAT_NUMBER);
+    let y = evt.target.getLatLng().lng.toFixed(FLOAT_NUMBER);
+    updateCurentPinCoordinates(x, y);
+  });
+};
 
 const createSimilarPins = (elements) => {
   elements.forEach((element) => {
@@ -85,5 +87,7 @@ const createSimilarPins = (elements) => {
       );
   });
 };
+
+initMainPin();
 
 export {createSimilarPins};

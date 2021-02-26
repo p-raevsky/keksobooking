@@ -1,4 +1,4 @@
-import {isEscEvent} from './util.js';
+import {isEscEvent, isEnterEvent} from './util.js';
 import {sendData} from './api.js';
 
 const MIN_LENGTH_TITLE = 30;
@@ -39,7 +39,7 @@ const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const images = adForm.querySelector('#images');
-const adFormSubmit = adForm.querySelector('.ad-form__submit');
+const adFormButton = adForm.querySelector('.ad-form__submit');
 const adFormReset =  adForm.querySelector('.ad-form__reset');
 
 const actionValue = 'https://22.javascript.pages.academy/keksobooking';
@@ -141,79 +141,96 @@ const activateForm = () => {
   enableElements(selectsFilter);
 };
 
-const onEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
+const onEscEtnerKeydown = (evt) => {
+  if (isEscEvent(evt) || isEnterEvent(evt)) {
     evt.preventDefault();
     closeSuccessMsg();
+    closeErrorMsg();
   }
 };
 
 const closeSuccessMsg = () => {
-  const main = document.querySelector('main');
   const successElement = document.querySelector('.success');
 
   if (successElement) {
-    main.removeChild(successElement);
+    successElement.remove();
   }
 
-  document.removeEventListener('keydown', onEscKeydown);
+  document.removeEventListener('keydown', onEscEtnerKeydown);
 };
 
 const closeErrorMsg = () => {
-  const main = document.querySelector('main');
   const errorElement = document.querySelector('.error');
 
   if (errorElement) {
-    main.removeChild(errorElement);
+    errorElement.remove();
   }
 
-  document.removeEventListener('keydown', onEscKeydown);
+  document.removeEventListener('keydown', onEscEtnerKeydown);
 };
 
 const setSuccessResult = () => {
   const main = document.querySelector('main');
   const successTemplate = document.querySelector('#success').content.querySelector('.success');
   const successElement = successTemplate.cloneNode(true);
+  successElement.style.zIndex = 1000;
 
   main.appendChild(successElement);
 
+  resetPageData();
+
   successElement.addEventListener('click', () => {
     closeSuccessMsg();
-  })
-
-  document.addEventListener('keydown', onEscKeydown);
+  });
+  document.addEventListener('keydown', onEscEtnerKeydown);
 };
 
 const setErrorResult = () => {
   const main = document.querySelector('main');
   const errorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorElement = errorTemplate.cloneNode(true);
+  errorElement.style.zIndex = 1000;
 
   main.appendChild(errorElement);
 
   errorElement.addEventListener('click', () => {
     closeErrorMsg();
-  })
-
-  document.addEventListener('keydown', onEscKeydown);
+  });
+  document.addEventListener('keydown', onEscEtnerKeydown);
 };
 
-const setUserFormSubmit = () => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+const onAdFormSubmit = (evt) => {
+  evt.preventDefault();
 
-    const formData = new FormData(evt.target);
+  const formData = new FormData(evt.target);
 
-    sendData(
-      () => setSuccessResult(),
-      () => setErrorResult(),
-      formData,
-    );
-  });
+  sendData(
+    () => setSuccessResult(),
+    () => setErrorResult(),
+    formData,
+  );
+
+  adForm.removeEventListener('submit', onAdFormSubmit);
+};
+
+const onAdFormButtonClick = () => {
+  adForm.addEventListener('submit', onAdFormSubmit);
 }
 
-adFormSubmit.addEventListener('click', () => {
-  setUserFormSubmit();
+adFormButton.addEventListener('click', onAdFormButtonClick);
+
+const resetPageData = () => {
+  adForm.reset();
+  mapFilter.reset();
+
+  syncRoomsAndCapacity();
+  syncTypeAndPrice();
+  setDefaultAttributes();
+  updateCurentPinCoordinates();
+};
+
+adFormReset.addEventListener('click', () => {
+  resetPageData();
 });
 
 const initForm = () => {
@@ -223,6 +240,4 @@ const initForm = () => {
   deactivateForm();
 };
 
-initForm();
-
-export {activateForm, updateCurentPinCoordinates, setUserFormSubmit, offersLabelsMap};
+export {activateForm, updateCurentPinCoordinates, initForm, resetPageData, offersLabelsMap};

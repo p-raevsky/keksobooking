@@ -26,4 +26,8 @@ const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-export {showAlert, isEscEvent};
+const isEnterEvent = (evt) => {
+  return evt.key === 'Enter';
+};
+
+export {showAlert, isEscEvent, isEnterEvent};
