@@ -1,5 +1,6 @@
 import {isEscEvent, isEnterEvent} from './util.js';
 import {sendData} from './api.js';
+import { resetMainPin } from './map.js';
 
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
@@ -40,7 +41,7 @@ const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const images = adForm.querySelector('#images');
 const adFormButton = adForm.querySelector('.ad-form__submit');
-const adFormReset =  adForm.querySelector('.ad-form__reset');
+const adFormReset =  document.querySelector('.ad-form__reset');
 
 const actionValue = 'https://22.javascript.pages.academy/keksobooking';
 
@@ -177,12 +178,12 @@ const setSuccessResult = () => {
 
   main.appendChild(successElement);
 
-  resetPageData();
-
   successElement.addEventListener('click', () => {
     closeSuccessMsg();
   });
   document.addEventListener('keydown', onEscEtnerKeydown);
+
+  resetPageData();
 };
 
 const setErrorResult = () => {
@@ -219,25 +220,29 @@ const onAdFormButtonClick = () => {
 
 adFormButton.addEventListener('click', onAdFormButtonClick);
 
-const resetPageData = () => {
+const resetForms = () => {
   adForm.reset();
   mapFilter.reset();
+};
 
+const resetPageData = () => {
+  resetForms()
   syncRoomsAndCapacity();
   syncTypeAndPrice();
   setDefaultAttributes();
-  updateCurentPinCoordinates();
+  resetMainPin();
 };
 
-adFormReset.addEventListener('click', () => {
+adFormReset.addEventListener('click', (evt) => {
+  evt.preventDefault();
   resetPageData();
 });
 
-const initForm = () => {
+const defaultForm = () => {
   syncRoomsAndCapacity();
   syncTypeAndPrice();
   setDefaultAttributes();
   deactivateForm();
 };
 
-export {activateForm, updateCurentPinCoordinates, initForm, resetPageData, offersLabelsMap};
+export {offersLabelsMap, activateForm, updateCurentPinCoordinates, defaultForm};

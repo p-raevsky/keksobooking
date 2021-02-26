@@ -1,12 +1,15 @@
-import './map.js';
 import './popup.js';
 import './form.js';
+import './map.js';
 import './api.js';
 
-import {createSimilarPins} from './map.js';
+import {initMap} from './map.js';
 import {getData} from './api.js';
 import {showAlert} from './util.js';
-import {initForm} from './form.js';
+import {defaultForm, activateForm, updateCurentPinCoordinates} from './form.js';
+import {createSimilarAd} from './popup.js';
 
-initForm();
-getData(createSimilarPins, showAlert);
+getData(showAlert).then(data => {
+  defaultForm();
+  initMap(data, activateForm, updateCurentPinCoordinates, createSimilarAd);
+});
