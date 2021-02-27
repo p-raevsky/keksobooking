@@ -1,7 +1,3 @@
-import {isEscEvent, isEnterEvent} from './util.js';
-import {sendData} from './api.js';
-import { resetMainPin } from './map.js';
-
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
 const MAX_VALUE_PRICE = 1000000;
@@ -40,8 +36,6 @@ const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const images = adForm.querySelector('#images');
-const adFormButton = adForm.querySelector('.ad-form__submit');
-const adFormReset =  document.querySelector('.ad-form__reset');
 
 const actionValue = 'https://22.javascript.pages.academy/keksobooking';
 
@@ -142,101 +136,17 @@ const activateForm = () => {
   enableElements(selectsFilter);
 };
 
-const onEscEtnerKeydown = (evt) => {
-  if (isEscEvent(evt) || isEnterEvent(evt)) {
-    evt.preventDefault();
-    closeSuccessMsg();
-    closeErrorMsg();
-  }
-};
-
-const closeSuccessMsg = () => {
-  const successElement = document.querySelector('.success');
-
-  if (successElement) {
-    successElement.remove();
-  }
-
-  document.removeEventListener('keydown', onEscEtnerKeydown);
-};
-
-const closeErrorMsg = () => {
-  const errorElement = document.querySelector('.error');
-
-  if (errorElement) {
-    errorElement.remove();
-  }
-
-  document.removeEventListener('keydown', onEscEtnerKeydown);
-};
-
-const setSuccessResult = () => {
-  const main = document.querySelector('main');
-  const successTemplate = document.querySelector('#success').content.querySelector('.success');
-  const successElement = successTemplate.cloneNode(true);
-  successElement.style.zIndex = 1000;
-
-  main.appendChild(successElement);
-
-  successElement.addEventListener('click', () => {
-    closeSuccessMsg();
-  });
-  document.addEventListener('keydown', onEscEtnerKeydown);
-
-  resetPageData();
-};
-
-const setErrorResult = () => {
-  const main = document.querySelector('main');
-  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  const errorElement = errorTemplate.cloneNode(true);
-  errorElement.style.zIndex = 1000;
-
-  main.appendChild(errorElement);
-
-  errorElement.addEventListener('click', () => {
-    closeErrorMsg();
-  });
-  document.addEventListener('keydown', onEscEtnerKeydown);
-};
-
-const onAdFormSubmit = (evt) => {
-  evt.preventDefault();
-
-  const formData = new FormData(evt.target);
-
-  sendData(
-    () => setSuccessResult(),
-    () => setErrorResult(),
-    formData,
-  );
-
-  adForm.removeEventListener('submit', onAdFormSubmit);
-};
-
-const onAdFormButtonClick = () => {
-  adForm.addEventListener('submit', onAdFormSubmit);
-}
-
-adFormButton.addEventListener('click', onAdFormButtonClick);
-
 const resetForms = () => {
   adForm.reset();
   mapFilter.reset();
 };
 
-const resetPageData = () => {
+const resetFormData = () => {
   resetForms()
   syncRoomsAndCapacity();
   syncTypeAndPrice();
-  setDefaultAttributes();
-  resetMainPin();
+  setDefaultAttributes()
 };
-
-adFormReset.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetPageData();
-});
 
 const defaultForm = () => {
   syncRoomsAndCapacity();
@@ -245,4 +155,4 @@ const defaultForm = () => {
   deactivateForm();
 };
 
-export {offersLabelsMap, activateForm, updateCurentPinCoordinates, defaultForm};
+export {offersLabelsMap, activateForm, updateCurentPinCoordinates, defaultForm, resetFormData};
