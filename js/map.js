@@ -13,7 +13,7 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const getMap = (onLoadMap) => {
+const createtMap = (onLoadMap) => {
   return L.map('map-canvas')
     .on('load', onLoadMap)
     .setView({
@@ -83,7 +83,7 @@ const createSimilarPins = (elements, createAd, map) => {
 };
 
 const initMap = (elements, onLoadMap, setPinCoordinates, createAd) => {
-  const map = getMap(onLoadMap)
+  const map = createtMap(onLoadMap)
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

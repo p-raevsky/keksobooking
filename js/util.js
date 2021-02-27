@@ -1,17 +1,29 @@
 const ALERT_SHOW_TIME = 5000;
+const alertValues = {
+  zIndex: 1000,
+  position: 'fixed',
+  left: 0,
+  top: 0,
+  right: 0,
+  padding: '10px 3px',
+  fontSize: '30px',
+  textAlign: 'center',
+  backgroundColor: 'rgb(255, 0, 0, 0.8)',
+  color:'white',
+};
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 1000;
-  alertContainer.style.position = 'fixed';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'rgb(255, 0, 0, 0.8)';
-  alertContainer.style.color = 'white';
+  alertContainer.style.zIndex = alertValues.zIndex;
+  alertContainer.style.position = alertValues.position;
+  alertContainer.style.left =alertValues.left;
+  alertContainer.style.top =alertValues.top;
+  alertContainer.style.right =alertValues.right;
+  alertContainer.style.padding = alertValues.padding;
+  alertContainer.style.fontSize = alertValues.fontSize;
+  alertContainer.style.textAlign = alertValues.textAlign;
+  alertContainer.style.backgroundColor = alertValues.backgroundColor;
+  alertContainer.style.color = alertValues.color;
 
   alertContainer.textContent = message;
 
