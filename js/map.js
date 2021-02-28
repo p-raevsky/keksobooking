@@ -1,31 +1,39 @@
 /* global L:readonly */
 
 const FLOAT_NUMBER = 5;
-
-const centerPointCoordinates = {
-  lat: 35.68038,
-  lng: 139.76906,
+const DEFAULT_MAP_SETTINGS = {
+  coordinates: {
+    lat: 35.68038,
+    lng: 139.76906,
+  },
+  scale: 10,
+  mainPin: {
+    iconUrl: '../img/main-pin.svg',
+    iconSize: [52, 52],
+    iconAnchor: [26, 52],
+  },
+  marker: {
+    iconUrl: '../img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  },
 };
 
-const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
-});
+const mainPinIcon = L.icon(DEFAULT_MAP_SETTINGS.mainPin);
 
-const createtMap = (onLoadMap) => {
+const createMap = (onLoadMap) => {
   return L.map('map-canvas')
     .on('load', onLoadMap)
-    .setView({
-      lat: centerPointCoordinates.lat,
-      lng: centerPointCoordinates.lng,
-    }, 10);
+    .setView(
+      DEFAULT_MAP_SETTINGS.coordinates,
+      DEFAULT_MAP_SETTINGS.scale,
+    );
 };
 
 const marker = L.marker(
   {
-    lat: centerPointCoordinates.lat,
-    lng: centerPointCoordinates.lng,
+    lat: DEFAULT_MAP_SETTINGS.coordinates.lat,
+    lng: DEFAULT_MAP_SETTINGS.coordinates.lng,
   },
   {
     draggable: true,
@@ -37,7 +45,7 @@ const marker = L.marker(
 );
 
 const initMainPin = (setPinCoordinates) => {
-  setPinCoordinates(centerPointCoordinates['lat'], centerPointCoordinates['lng']);
+  setPinCoordinates(DEFAULT_MAP_SETTINGS.coordinates.lat, DEFAULT_MAP_SETTINGS.coordinates.lng);
 
   marker.on('move', (evt) => {
     const x = evt.target.getLatLng().lat.toFixed(FLOAT_NUMBER);
@@ -48,18 +56,16 @@ const initMainPin = (setPinCoordinates) => {
 
 const resetMainPin = () => {
   marker.setLatLng({
-    lat: centerPointCoordinates.lat,
-    lng: centerPointCoordinates.lng,
+    lat: DEFAULT_MAP_SETTINGS.coordinates.lat,
+    lng: DEFAULT_MAP_SETTINGS.coordinates.lng,
   });
 };
 
+let markers = [];
+
 const createSimilarPins = (elements, createAd, map) => {
   elements.forEach((element) => {
-    const icon = L.icon({
-      iconUrl: '../img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
+    const icon = L.icon(DEFAULT_MAP_SETTINGS.marker);
 
     const marker = L.marker(
       {
@@ -79,11 +85,27 @@ const createSimilarPins = (elements, createAd, map) => {
           keepInView: true,
         },
       );
+
+    markers.push(marker);
+  });
+
+  return markers;
+};
+
+const removePins = () => {
+  markers.forEach((marker) => {
+    marker.remove();
+  });
+};
+
+const adPins = (map) => {
+  markers.forEach((marker) => {
+    marker.addTo(map);
   });
 };
 
 const initMap = (elements, onLoadMap, setPinCoordinates, createAd) => {
-  const map = createtMap(onLoadMap)
+  const map = createMap(onLoadMap);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -96,6 +118,8 @@ const initMap = (elements, onLoadMap, setPinCoordinates, createAd) => {
 
   initMainPin(setPinCoordinates);
   createSimilarPins(elements, createAd, map);
+
+  return map;
 };
 
-export {initMap, resetMainPin};
+export {DEFAULT_MAP_SETTINGS, markers, initMap, resetMainPin, removePins, adPins};

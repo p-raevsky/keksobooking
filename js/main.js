@@ -3,16 +3,13 @@ import './form.js';
 import './map.js';
 import './api.js';
 
-import {initMap, resetMainPin} from './map.js';
+import {initMap, resetMainPin, DEFAULT_MAP_SETTINGS, removePins, adPins} from './map.js';
 import {getData, sendData} from './api.js';
 import {showAlert, isEscEvent, isEnterEvent} from './util.js';
 import {defaultForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormButton, adFormReset} from './form.js';
 import {createSimilarAd, createSuccessMsg, createErrorMsg} from './popup.js';
 
-const resetPage = () => {
-  resetFormData();
-  resetMainPin();
-}
+let curentMap;
 
 const onEscEtnerKeydown = (evt) => {
   if (isEscEvent(evt) || isEnterEvent(evt)) {
@@ -72,12 +69,27 @@ const onAdFormSubmit = (evt) => {
 
 const onAdFormButtonClick = () => {
   adForm.addEventListener('submit', onAdFormSubmit);
-}
+};
 
-getData(showAlert).then(data => {
-  defaultForm();
-  initMap(data, activateForm, updateCurentPinCoordinates, createSimilarAd);
-});
+const loadMap = () => {
+  getData(showAlert).then(data => {
+    defaultForm();
+    curentMap = initMap(data, activateForm, updateCurentPinCoordinates, createSimilarAd);
+  });
+};
+
+const resetPage = () => {
+  resetFormData();
+  resetMainPin();
+  curentMap.setView(
+    DEFAULT_MAP_SETTINGS.coordinates,
+    DEFAULT_MAP_SETTINGS.scale,
+  );
+  removePins();
+  adPins(curentMap);
+};
+
+loadMap();
 
 adFormReset.addEventListener('click', (evt) => {
   evt.preventDefault();
