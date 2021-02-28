@@ -1,4 +1,4 @@
-import {offersLabelsMap} from './data.js';
+import {offersLabelsMap} from './form.js';
 
 const PHOTO_WIDTH = 45;
 const PHOTO_HEIGHT = 40;
@@ -30,70 +30,92 @@ const createPhotosFragment = (photoSrcArray) => {
 const createSimilarAd = (element) => {
   const adTemplate = document.querySelector('#card').content.querySelector('.popup');
   const adElement = adTemplate.cloneNode(true);
-  const popupTitle = adElement.querySelector('.popup__title');
-  const popupTextAddress = adElement.querySelector('.popup__text--address');
-  const popupTextPrice = adElement.querySelector('.popup__text--price');
-  const popupType = adElement.querySelector('.popup__type');
-  const popupTextСapacity = adElement.querySelector('.popup__text--capacity');
-  const popupTextTime = adElement.querySelector('.popup__text--time');
-  const popupFeatures = adElement.querySelector('.popup__features');
-  const popupDescription = adElement.querySelector('.popup__description');
-  const popupPhotos = adElement.querySelector('.popup__photos');
-  const popupAvatar = adElement.querySelector('.popup__avatar');
+  const adTitle = adElement.querySelector('.popup__title');
+  const adTextAddress = adElement.querySelector('.popup__text--address');
+  const adTextPrice = adElement.querySelector('.popup__text--price');
+  const adType = adElement.querySelector('.popup__type');
+  const adTextСapacity = adElement.querySelector('.popup__text--capacity');
+  const adTextTime = adElement.querySelector('.popup__text--time');
+  const adFeatures = adElement.querySelector('.popup__features');
+  const adDescription = adElement.querySelector('.popup__description');
+  const adPhotos = adElement.querySelector('.popup__photos');
+  const adAvatar = adElement.querySelector('.popup__avatar');
 
   if (element.offer.title) {
-    popupTitle.textContent = element.offer.title;
+    adTitle.textContent = element.offer.title;
   } else {
-    popupTitle.remove();
+    adTitle.remove();
   }
 
   if (element.offer.address) {
-    popupTextAddress.textContent = element.offer.address;
+    adTextAddress.textContent = element.offer.address;
   } else {
-    popupTextAddress.remove();
+    adTextAddress.remove();
   }
 
   if (element.offer.price) {
-    popupTextPrice.textContent = `${element.offer.price} ₽/ночь`;
+    adTextPrice.textContent = `${element.offer.price} ₽/ночь`;
   } else {
-    popupTextPrice.remove();
+    adTextPrice.remove();
   }
 
   if (element.offer.description) {
-    popupDescription.textContent = element.offer.description;
+    adDescription.textContent = element.offer.description;
   } else {
-    popupDescription.remove();
+    adDescription.remove();
   }
 
   if (element.author.avatar) {
-    popupAvatar.src = element.author.avatar;
+    adAvatar.src = element.author.avatar;
   } else {
-    popupAvatar.remove();
+    adAvatar.remove();
   }
 
   if (element.offer.features) {
-    popupFeatures.innerHTML = '';
+    adFeatures.innerHTML = '';
     const featuresFragment = createFeaturesFragment(element.offer.features);
-    popupFeatures.appendChild(featuresFragment);
+    adFeatures.appendChild(featuresFragment);
   } else {
-    popupFeatures.remove();
+    adFeatures.remove();
   }
 
   if (element.offer.photos) {
-    popupPhotos.innerHTML = '';
+    adPhotos.innerHTML = '';
     const photosFragment = createPhotosFragment(element.offer.photos);
-    popupPhotos.appendChild(photosFragment);
+    adPhotos.appendChild(photosFragment);
   } else {
-    popupPhotos.remove();
+    adPhotos.remove();
   }
 
-  popupTextСapacity.textContent = `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`;
-  popupTextTime.textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
+  adTextСapacity.textContent = `${element.offer.rooms} комнаты для ${element.offer.guests} гостей`;
+  adTextTime.textContent = `Заезд после ${element.offer.checkin}, выезд до ${element.offer.checkout}`;
 
   const label = offersLabelsMap[element.offer.type].label;
-  popupType.textContent = label;
+  adType.textContent = label;
 
   return adElement;
 };
 
-export {createSimilarAd};
+const createSuccessMsg = () => {
+  const main = document.querySelector('main');
+  const successTemplate = document.querySelector('#success').content.querySelector('.success');
+  const successElement = successTemplate.cloneNode(true);
+  successElement.style.zIndex = 1000;
+
+  main.appendChild(successElement);
+
+  return successElement;
+};
+
+const createErrorMsg = () => {
+  const main = document.querySelector('main');
+  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  const errorElement = errorTemplate.cloneNode(true);
+  errorElement.style.zIndex = 1000;
+
+  main.appendChild(errorElement);
+
+  return errorElement;
+};
+
+export {createSimilarAd, createSuccessMsg, createErrorMsg};

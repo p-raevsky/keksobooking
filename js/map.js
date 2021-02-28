@@ -1,9 +1,5 @@
 /* global L:readonly */
 
-import {createSimilarAd} from './popup.js';
-import {activateForm, updateCurentPinCoordinates} from './form.js';
-
-
 const FLOAT_NUMBER = 5;
 
 const centerPointCoordinates = {
@@ -17,21 +13,14 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    activateForm();
-  })
-  .setView({
-    lat: centerPointCoordinates.lat,
-    lng: centerPointCoordinates.lng,
-  }, 10);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+const createtMap = (onLoadMap) => {
+  return L.map('map-canvas')
+    .on('load', onLoadMap)
+    .setView({
+      lat: centerPointCoordinates.lat,
+      lng: centerPointCoordinates.lng,
+    }, 10);
+};
 
 const marker = L.marker(
   {
@@ -47,17 +36,24 @@ const marker = L.marker(
   },
 );
 
-marker.addTo(map);
+const initMainPin = (setPinCoordinates) => {
+  setPinCoordinates(centerPointCoordinates['lat'], centerPointCoordinates['lng']);
 
-updateCurentPinCoordinates(centerPointCoordinates['lat'], centerPointCoordinates['lng']);
+  marker.on('move', (evt) => {
+    const x = evt.target.getLatLng().lat.toFixed(FLOAT_NUMBER);
+    const y = evt.target.getLatLng().lng.toFixed(FLOAT_NUMBER);
+    setPinCoordinates(x, y);
+  });
+};
 
-marker.on('move', (evt) => {
-  const x = evt.target.getLatLng().lat.toFixed(FLOAT_NUMBER);
-  const y = evt.target.getLatLng().lng.toFixed(FLOAT_NUMBER);
-  updateCurentPinCoordinates(x, y);
-});
+const resetMainPin = () => {
+  marker.setLatLng({
+    lat: centerPointCoordinates.lat,
+    lng: centerPointCoordinates.lng,
+  });
+};
 
-const createSimilarPin = (elements) => {
+const createSimilarPins = (elements, createAd, map) => {
   elements.forEach((element) => {
     const icon = L.icon({
       iconUrl: '../img/pin.svg',
@@ -67,8 +63,8 @@ const createSimilarPin = (elements) => {
 
     const marker = L.marker(
       {
-        lat: element.location.x,
-        lng: element.location.y,
+        lat: element.location.lat,
+        lng: element.location.lng,
       },
       {
         icon,
@@ -78,7 +74,7 @@ const createSimilarPin = (elements) => {
     marker
       .addTo(map)
       .bindPopup(
-        createSimilarAd(element),
+        createAd(element),
         {
           keepInView: true,
         },
@@ -86,4 +82,20 @@ const createSimilarPin = (elements) => {
   });
 };
 
-export {createSimilarPin, centerPointCoordinates};
+const initMap = (elements, onLoadMap, setPinCoordinates, createAd) => {
+  const map = createtMap(onLoadMap)
+
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(map);
+
+  marker.addTo(map);
+
+  initMainPin(setPinCoordinates);
+  createSimilarPins(elements, createAd, map);
+};
+
+export {initMap, resetMainPin};
