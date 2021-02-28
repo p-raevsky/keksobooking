@@ -96,4 +96,26 @@ const createSimilarAd = (element) => {
   return adElement;
 };
 
-export {createSimilarAd};
+const createSuccessMsg = () => {
+  const main = document.querySelector('main');
+  const successTemplate = document.querySelector('#success').content.querySelector('.success');
+  const successElement = successTemplate.cloneNode(true);
+  successElement.style.zIndex = 1000;
+
+  main.appendChild(successElement);
+
+  return successElement;
+};
+
+const createErrorMsg = () => {
+  const main = document.querySelector('main');
+  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  const errorElement = errorTemplate.cloneNode(true);
+  errorElement.style.zIndex = 1000;
+
+  main.appendChild(errorElement);
+
+  return errorElement;
+};
+
+export {createSimilarAd, createSuccessMsg, createErrorMsg};

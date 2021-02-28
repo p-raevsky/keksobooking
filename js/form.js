@@ -36,6 +36,9 @@ const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const images = adForm.querySelector('#images');
+const adFormButton = document.querySelector('.ad-form__submit');
+const adFormReset =  document.querySelector('.ad-form__reset');
+
 
 const actionValue = 'https://22.javascript.pages.academy/keksobooking';
 
@@ -155,4 +158,4 @@ const defaultForm = () => {
   deactivateForm();
 };
 
-export {offersLabelsMap, activateForm, updateCurentPinCoordinates, defaultForm, resetFormData};
+export {offersLabelsMap, adForm, adFormButton, adFormReset, activateForm, updateCurentPinCoordinates, defaultForm, resetFormData};

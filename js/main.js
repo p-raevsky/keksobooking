@@ -6,12 +6,8 @@ import './api.js';
 import {initMap, resetMainPin} from './map.js';
 import {getData, sendData} from './api.js';
 import {showAlert, isEscEvent, isEnterEvent} from './util.js';
-import {defaultForm, activateForm, updateCurentPinCoordinates, resetFormData} from './form.js';
-import {createSimilarAd} from './popup.js';
-
-const adForm = document.querySelector('.ad-form');
-const adFormButton = document.querySelector('.ad-form__submit');
-const adFormReset =  document.querySelector('.ad-form__reset');
+import {defaultForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormButton, adFormReset} from './form.js';
+import {createSimilarAd, createSuccessMsg, createErrorMsg} from './popup.js';
 
 const resetPage = () => {
   resetFormData();
@@ -21,23 +17,17 @@ const resetPage = () => {
 const onEscEtnerKeydown = (evt) => {
   if (isEscEvent(evt) || isEnterEvent(evt)) {
     evt.preventDefault();
-    closeSuccessMsg();
-    closeErrorMsg();
+    closeMsg();
   }
 };
 
-const closeSuccessMsg = () => {
+const closeMsg = () => {
   const successElement = document.querySelector('.success');
+  const errorElement = document.querySelector('.error');
 
   if (successElement) {
     successElement.remove();
   }
-
-  document.removeEventListener('keydown', onEscEtnerKeydown);
-};
-
-const closeErrorMsg = () => {
-  const errorElement = document.querySelector('.error');
 
   if (errorElement) {
     errorElement.remove();
@@ -47,15 +37,10 @@ const closeErrorMsg = () => {
 };
 
 const setSuccessResult = () => {
-  const main = document.querySelector('main');
-  const successTemplate = document.querySelector('#success').content.querySelector('.success');
-  const successElement = successTemplate.cloneNode(true);
-  successElement.style.zIndex = 1000;
+  const element = createSuccessMsg();
 
-  main.appendChild(successElement);
-
-  successElement.addEventListener('click', () => {
-    closeSuccessMsg();
+  element.addEventListener('click', () => {
+    closeMsg();
   });
   document.addEventListener('keydown', onEscEtnerKeydown);
 
@@ -63,15 +48,10 @@ const setSuccessResult = () => {
 };
 
 const setErrorResult = () => {
-  const main = document.querySelector('main');
-  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  const errorElement = errorTemplate.cloneNode(true);
-  errorElement.style.zIndex = 1000;
+  const element = createErrorMsg();
 
-  main.appendChild(errorElement);
-
-  errorElement.addEventListener('click', () => {
-    closeErrorMsg();
+  element.addEventListener('click', () => {
+    closeMsg();
   });
   document.addEventListener('keydown', onEscEtnerKeydown);
 };
