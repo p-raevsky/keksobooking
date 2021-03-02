@@ -4,18 +4,6 @@ const PHOTO_WIDTH = 45;
 const PHOTO_HEIGHT = 40;
 const Z_INDEX_VALUE = 1000;
 
-const adTemplate = document.querySelector('#card').content.querySelector('.popup');
-const adElement = adTemplate.cloneNode(true);
-const adTitle = adElement.querySelector('.popup__title');
-const adTextAddress = adElement.querySelector('.popup__text--address');
-const adTextPrice = adElement.querySelector('.popup__text--price');
-const adType = adElement.querySelector('.popup__type');
-const adTextСapacity = adElement.querySelector('.popup__text--capacity');
-const adTextTime = adElement.querySelector('.popup__text--time');
-const adFeatures = adElement.querySelector('.popup__features');
-const adDescription = adElement.querySelector('.popup__description');
-const adPhotos = adElement.querySelector('.popup__photos');
-const adAvatar = adElement.querySelector('.popup__avatar');
 const main = document.querySelector('main');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -47,6 +35,19 @@ const createPhotosFragment = (photoSrcArray) => {
 };
 
 const createSimilarAd = (element) => {
+  const adTemplate = document.querySelector('#card').content.querySelector('.popup');
+  const adElement = adTemplate.cloneNode(true);
+  const adTitle = adElement.querySelector('.popup__title');
+  const adTextAddress = adElement.querySelector('.popup__text--address');
+  const adTextPrice = adElement.querySelector('.popup__text--price');
+  const adType = adElement.querySelector('.popup__type');
+  const adTextСapacity = adElement.querySelector('.popup__text--capacity');
+  const adTextTime = adElement.querySelector('.popup__text--time');
+  const adFeatures = adElement.querySelector('.popup__features');
+  const adDescription = adElement.querySelector('.popup__description');
+  const adPhotos = adElement.querySelector('.popup__photos');
+  const adAvatar = adElement.querySelector('.popup__avatar');
+
   if (element.offer.title) {
     adTitle.textContent = element.offer.title;
   } else {

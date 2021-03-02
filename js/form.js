@@ -5,19 +5,19 @@ const ROOM_NUMBER_MAX = 100;
 const CAPACITY_MIN = 0;
 
 const offersLabelsMap = {
-  'palace': {
+  palace: {
     label: 'Дворец',
     price: 10000,
   },
-  'flat': {
+  flat: {
     label: 'Квартира',
     price: 1000,
   },
-  'house': {
+  house: {
     label: 'Дом',
     price: 5000,
   },
-  'bungalow': {
+  bungalow: {
     label: 'Бунгало',
     price: 0,
   },

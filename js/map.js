@@ -1,7 +1,8 @@
 /* global L:readonly */
 
 const FLOAT_NUMBER = 5;
-const DEFAULT_MAP_SETTINGS = {
+
+const defaultMapSettings = {
   coordinates: {
     lat: 35.68038,
     lng: 139.76906,
@@ -19,21 +20,21 @@ const DEFAULT_MAP_SETTINGS = {
   },
 };
 
-const mainPinIcon = L.icon(DEFAULT_MAP_SETTINGS.mainPin);
+const mainPinIcon = L.icon(defaultMapSettings.mainPin);
 
 const createMap = (onLoadMap) => {
   return L.map('map-canvas')
     .on('load', onLoadMap)
     .setView(
-      DEFAULT_MAP_SETTINGS.coordinates,
-      DEFAULT_MAP_SETTINGS.scale,
+      defaultMapSettings.coordinates,
+      defaultMapSettings.scale,
     );
 };
 
 const marker = L.marker(
   {
-    lat: DEFAULT_MAP_SETTINGS.coordinates.lat,
-    lng: DEFAULT_MAP_SETTINGS.coordinates.lng,
+    lat: defaultMapSettings.coordinates.lat,
+    lng: defaultMapSettings.coordinates.lng,
   },
   {
     draggable: true,
@@ -45,7 +46,7 @@ const marker = L.marker(
 );
 
 const initMainPin = (setPinCoordinates) => {
-  setPinCoordinates(DEFAULT_MAP_SETTINGS.coordinates.lat, DEFAULT_MAP_SETTINGS.coordinates.lng);
+  setPinCoordinates(defaultMapSettings.coordinates.lat, defaultMapSettings.coordinates.lng);
 
   marker.on('move', (evt) => {
     const x = evt.target.getLatLng().lat.toFixed(FLOAT_NUMBER);
@@ -56,16 +57,16 @@ const initMainPin = (setPinCoordinates) => {
 
 const resetMainPin = () => {
   marker.setLatLng({
-    lat: DEFAULT_MAP_SETTINGS.coordinates.lat,
-    lng: DEFAULT_MAP_SETTINGS.coordinates.lng,
+    lat: defaultMapSettings.coordinates.lat,
+    lng: defaultMapSettings.coordinates.lng,
   });
 };
 
-let markers = [];
+const markers = [];
 
 const createSimilarPins = (elements, createAd, map) => {
   elements.forEach((element) => {
-    const icon = L.icon(DEFAULT_MAP_SETTINGS.marker);
+    const icon = L.icon(defaultMapSettings.marker);
 
     const marker = L.marker(
       {
@@ -88,8 +89,6 @@ const createSimilarPins = (elements, createAd, map) => {
 
     markers.push(marker);
   });
-
-  return markers;
 };
 
 const removePins = () => {
@@ -122,4 +121,18 @@ const initMap = (elements, onLoadMap, setPinCoordinates, createAd) => {
   return map;
 };
 
-export {DEFAULT_MAP_SETTINGS, markers, initMap, resetMainPin, removePins, adPins};
+const updateMap = (elements, createAd, map) => {
+  map.setView(
+    defaultMapSettings.coordinates,
+    defaultMapSettings.scale,
+  );
+  removePins();
+
+  const markers = createSimilarPins(elements, createAd, map);
+
+  markers.forEach((marker) => {
+    marker.addTo(map);
+  });
+};
+
+export {defaultMapSettings, markers, initMap, resetMainPin, removePins, adPins, updateMap};
