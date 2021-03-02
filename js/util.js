@@ -12,13 +12,14 @@ const alertValues = {
   color:'white',
 };
 
+const alertContainer = document.createElement('div');
+
 const showAlert = (message) => {
-  const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = alertValues.zIndex;
   alertContainer.style.position = alertValues.position;
-  alertContainer.style.left =alertValues.left;
-  alertContainer.style.top =alertValues.top;
-  alertContainer.style.right =alertValues.right;
+  alertContainer.style.left = alertValues.left;
+  alertContainer.style.top = alertValues.top;
+  alertContainer.style.right = alertValues.right;
   alertContainer.style.padding = alertValues.padding;
   alertContainer.style.fontSize = alertValues.fontSize;
   alertContainer.style.textAlign = alertValues.textAlign;

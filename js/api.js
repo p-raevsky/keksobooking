@@ -1,19 +1,22 @@
 const SIMILAR_AD_COUNT = 10;
+const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
+const SEND_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
+const ON_FAIL_MSG = 'Не удалось загрузить данные. Попробуйте обновить страницу';
 
 const getData = (onFail) => {
-  return fetch('https://22.javascript.pages.academy/keksobooking/data')
+  return fetch(GET_DATA_URL)
     .then((response) => response.json())
     .then((ads) => {
       return ads.slice(0, SIMILAR_AD_COUNT);
     })
     .catch(() => {
-      onFail('Не удалось загрузить данные. Попробуйте обновить страницу');
+      onFail(ON_FAIL_MSG);
     });
 };
 
 const sendData = (onSuccess, onFail, data) => {
   fetch(
-    'https://22.javascript.pages.academy/keksobooking',
+    SEND_DATA_URL,
     {
       method: 'POST',
       body: data,

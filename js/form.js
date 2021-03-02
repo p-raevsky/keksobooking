@@ -1,21 +1,23 @@
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
 const MAX_VALUE_PRICE = 1000000;
+const ROOM_NUMBER_MAX = 100;
+const CAPACITY_MIN = 0;
 
 const offersLabelsMap = {
-  'palace': {
+  palace: {
     label: 'Дворец',
     price: 10000,
   },
-  'flat': {
+  flat: {
     label: 'Квартира',
     price: 1000,
   },
-  'house': {
+  house: {
     label: 'Дом',
     price: 5000,
   },
-  'bungalow': {
+  bungalow: {
     label: 'Бунгало',
     price: 0,
   },
@@ -39,11 +41,7 @@ const images = adForm.querySelector('#images');
 const adFormButton = document.querySelector('.ad-form__submit');
 const adFormReset =  document.querySelector('.ad-form__reset');
 
-
-const actionValue = 'https://22.javascript.pages.academy/keksobooking';
-
 const setDefaultAttributes = () => {
-  adForm.setAttribute('action', actionValue);
   avatarFile.setAttribute('accept', 'image/png, image/jpeg');
   titleField.setAttribute('required', '');
   titleField.setAttribute('minlength', MIN_LENGTH_TITLE);
@@ -60,13 +58,13 @@ const updateCurentPinCoordinates = (x, y) => {
 };
 
 const syncRoomsAndCapacity = () => {
-  const roomsOption = roomsNumber.value;
+  const roomsOption = Number(roomsNumber.value);
 
-  if (roomsOption === '100') {
-    capacity.value = '0';
+  if (roomsOption === ROOM_NUMBER_MAX) {
+    capacity.value = CAPACITY_MIN;
 
     capacityOptions.forEach((element) => {
-      if (element.value > '0') {
+      if (element.value > CAPACITY_MIN) {
         element.setAttribute('hidden', '');
       }
     });

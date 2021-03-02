@@ -2,6 +2,11 @@ import {offersLabelsMap} from './form.js';
 
 const PHOTO_WIDTH = 45;
 const PHOTO_HEIGHT = 40;
+const Z_INDEX_VALUE = 1000;
+
+const main = document.querySelector('main');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 const createFeaturesFragment = (featuresArray) => {
   const fragment = document.createDocumentFragment();
@@ -10,6 +15,7 @@ const createFeaturesFragment = (featuresArray) => {
     item.className = `popup__feature popup__feature--${feature}`;
     fragment.appendChild(item);
   });
+
   return fragment;
 };
 
@@ -24,6 +30,7 @@ const createPhotosFragment = (photoSrcArray) => {
     item.src = photoSrc;
     fragment.appendChild(item);
   });
+
   return fragment;
 };
 
@@ -97,10 +104,8 @@ const createSimilarAd = (element) => {
 };
 
 const createSuccessMsg = () => {
-  const main = document.querySelector('main');
-  const successTemplate = document.querySelector('#success').content.querySelector('.success');
   const successElement = successTemplate.cloneNode(true);
-  successElement.style.zIndex = 1000;
+  successElement.style.zIndex = Z_INDEX_VALUE;
 
   main.appendChild(successElement);
 
@@ -108,10 +113,8 @@ const createSuccessMsg = () => {
 };
 
 const createErrorMsg = () => {
-  const main = document.querySelector('main');
-  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
   const errorElement = errorTemplate.cloneNode(true);
-  errorElement.style.zIndex = 1000;
+  errorElement.style.zIndex = Z_INDEX_VALUE;
 
   main.appendChild(errorElement);
 

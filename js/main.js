@@ -1,18 +1,19 @@
+import './api.js';
 import './popup.js';
 import './form.js';
 import './map.js';
-import './api.js';
+import './filter.js';
 
-import {initMap, resetMainPin} from './map.js';
+import {initMap, resetMainPin, defaultMapSettings, removePins, adPins, updateMap} from './map.js';
 import {getData, sendData} from './api.js';
 import {showAlert, isEscEvent, isEnterEvent} from './util.js';
 import {defaultForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormButton, adFormReset} from './form.js';
 import {createSimilarAd, createSuccessMsg, createErrorMsg} from './popup.js';
+import {filterData, propertyTypeFilter} from './filter.js';
 
-const resetPage = () => {
-  resetFormData();
-  resetMainPin();
-}
+let curentMap;
+
+let curentData;
 
 const onEscEtnerKeydown = (evt) => {
   if (isEscEvent(evt) || isEnterEvent(evt)) {
@@ -72,12 +73,28 @@ const onAdFormSubmit = (evt) => {
 
 const onAdFormButtonClick = () => {
   adForm.addEventListener('submit', onAdFormSubmit);
-}
+};
 
-getData(showAlert).then(data => {
-  defaultForm();
-  initMap(data, activateForm, updateCurentPinCoordinates, createSimilarAd);
-});
+const loadMap = () => {
+  getData(showAlert).then(data => {
+    defaultForm();
+    curentData = data;
+    curentMap = initMap(data, activateForm, updateCurentPinCoordinates, createSimilarAd);
+  });
+};
+
+const resetPage = () => {
+  resetFormData();
+  resetMainPin();
+  curentMap.setView(
+    defaultMapSettings.coordinates,
+    defaultMapSettings.scale,
+  );
+  removePins();
+  adPins(curentMap);
+};
+
+loadMap();
 
 adFormReset.addEventListener('click', (evt) => {
   evt.preventDefault();
@@ -85,3 +102,9 @@ adFormReset.addEventListener('click', (evt) => {
 });
 
 adFormButton.addEventListener('click', onAdFormButtonClick);
+
+propertyTypeFilter.addEventListener('change', () => {
+  const filteredData = filterData(curentData);
+
+  updateMap(filteredData, createSimilarAd, curentMap);
+});
