@@ -1,8 +1,11 @@
+import {disableElements, enableElements, syncSelectValues} from './util.js';
+
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
 const MAX_VALUE_PRICE = 1000000;
 const ROOM_NUMBER_MAX = 100;
 const CAPACITY_MIN = 0;
+const DEFAULT_ANY_VALUE = 'any';
 
 const offersLabelsMap = {
   palace: {
@@ -25,6 +28,7 @@ const offersLabelsMap = {
 
 const mapFilter = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
+const propertyTypeFilter = mapFilter.querySelector('#housing-type');
 const fieldsets = document.querySelectorAll('fieldset');
 const selectsFilter = mapFilter.querySelectorAll('select');
 const avatarFile = adForm.querySelector('#avatar');
@@ -38,7 +42,6 @@ const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const images = adForm.querySelector('#images');
-const adFormButton = document.querySelector('.ad-form__submit');
 const adFormReset =  document.querySelector('.ad-form__reset');
 
 const setDefaultAttributes = () => {
@@ -97,29 +100,13 @@ propertyType.addEventListener('change', () => {
   syncTypeAndPrice();
 });
 
-const syncSelectTimes = (firstTimeElement, secondTimeElement) => {
-  firstTimeElement.value = secondTimeElement.value;
-};
-
 timeIn.addEventListener('change', () => {
-  syncSelectTimes(timeOut, timeIn);
+  syncSelectValues(timeOut, timeIn);
 });
 
 timeOut.addEventListener('change', () => {
-  syncSelectTimes(timeIn, timeOut);
+  syncSelectValues(timeIn, timeOut);
 });
-
-const disableElements = (elements) => {
-  elements.forEach((element) => {
-    element.disabled = true;
-  });
-};
-
-const enableElements = (elements) => {
-  elements.forEach((element) => {
-    element.disabled = false;
-  });
-};
 
 const deactivateForm = () => {
   mapFilter.classList.add('map__filters--disabled');
@@ -137,23 +124,22 @@ const activateForm = () => {
   enableElements(selectsFilter);
 };
 
-const resetForms = () => {
+const resetFormData = () => {
   adForm.reset();
   mapFilter.reset();
-};
-
-const resetFormData = () => {
-  resetForms()
   syncRoomsAndCapacity();
   syncTypeAndPrice();
   setDefaultAttributes()
 };
 
-const defaultForm = () => {
-  syncRoomsAndCapacity();
-  syncTypeAndPrice();
-  setDefaultAttributes();
-  deactivateForm();
+const isTypeFilterValue = (ad) => {
+  const selectedType = propertyTypeFilter.value;
+  const adType = ad.offer.type;
+  return selectedType === DEFAULT_ANY_VALUE ? true : selectedType === adType ? true : false;
 };
 
-export {offersLabelsMap, adForm, adFormButton, adFormReset, activateForm, updateCurentPinCoordinates, defaultForm, resetFormData};
+const filterData = (ads) => {
+  return ads.filter(isTypeFilterValue);
+};
+
+export {offersLabelsMap, adForm, adFormReset, propertyTypeFilter, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};

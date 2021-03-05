@@ -2,23 +2,22 @@ import './api.js';
 import './popup.js';
 import './form.js';
 import './map.js';
-import './filter.js';
+import './message.js';
 
 import {initMap, resetMainPin, defaultMapSettings, removePins, adPins, updateMap} from './map.js';
 import {getData, sendData} from './api.js';
 import {showAlert, isEscEvent, isEnterEvent} from './util.js';
-import {defaultForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormButton, adFormReset} from './form.js';
-import {createSimilarAd, createSuccessMsg, createErrorMsg} from './popup.js';
-import {filterData, propertyTypeFilter} from './filter.js';
+import {deactivateForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormReset, filterData, propertyTypeFilter} from './form.js';
+import {showSuccessMsg, showErrorMsg} from './message.js';
 
 let curentMap;
 
 let curentData;
 
-const onEscEtnerKeydown = (evt) => {
+const onDocumentKeydown = (evt) => {
   if (isEscEvent(evt) || isEnterEvent(evt)) {
     evt.preventDefault();
-    closeMsg();
+    closeMsg(onDocumentKeydown);
   }
 };
 
@@ -34,27 +33,7 @@ const closeMsg = () => {
     errorElement.remove();
   }
 
-  document.removeEventListener('keydown', onEscEtnerKeydown);
-};
-
-const setSuccessResult = () => {
-  const element = createSuccessMsg();
-
-  element.addEventListener('click', () => {
-    closeMsg();
-  });
-  document.addEventListener('keydown', onEscEtnerKeydown);
-
-  resetPage();
-};
-
-const setErrorResult = () => {
-  const element = createErrorMsg();
-
-  element.addEventListener('click', () => {
-    closeMsg();
-  });
-  document.addEventListener('keydown', onEscEtnerKeydown);
+  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 const onAdFormSubmit = (evt) => {
@@ -63,23 +42,20 @@ const onAdFormSubmit = (evt) => {
   const formData = new FormData(evt.target);
 
   sendData(
-    setSuccessResult,
-    setErrorResult,
+    () => {
+      showSuccessMsg(closeMsg, onDocumentKeydown);
+      resetPage();
+    },
+    () => showErrorMsg(closeMsg, onDocumentKeydown),
     formData,
   );
-
-  adForm.removeEventListener('submit', onAdFormSubmit);
-};
-
-const onAdFormButtonClick = () => {
-  adForm.addEventListener('submit', onAdFormSubmit);
 };
 
 const loadMap = () => {
   getData(showAlert).then(data => {
-    defaultForm();
+    deactivateForm();
     curentData = data;
-    curentMap = initMap(data, activateForm, updateCurentPinCoordinates, createSimilarAd);
+    curentMap = initMap(data, activateForm, updateCurentPinCoordinates);
   });
 };
 
@@ -96,15 +72,15 @@ const resetPage = () => {
 
 loadMap();
 
+adForm.addEventListener('submit', onAdFormSubmit);
+
 adFormReset.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetPage();
 });
 
-adFormButton.addEventListener('click', onAdFormButtonClick);
-
 propertyTypeFilter.addEventListener('change', () => {
   const filteredData = filterData(curentData);
 
-  updateMap(filteredData, createSimilarAd, curentMap);
+  updateMap(filteredData, curentMap);
 });

@@ -43,4 +43,20 @@ const isEnterEvent = (evt) => {
   return evt.key === 'Enter';
 };
 
-export {showAlert, isEscEvent, isEnterEvent};
+const disableElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = true;
+  });
+};
+
+const enableElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = false;
+  });
+};
+
+const syncSelectValues = (firstTimeElement, secondTimeElement) => {
+  firstTimeElement.value = secondTimeElement.value;
+};
+
+export {showAlert, isEscEvent, isEnterEvent, disableElements, enableElements, syncSelectValues};
