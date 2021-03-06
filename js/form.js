@@ -26,15 +26,35 @@ const offersLabelsMap = {
   },
 };
 
+const priceFilterRanges = {
+  low: {
+    minValue: 0,
+    maxValue: 10000,
+  },
+  middle: {
+    minValue: 10000,
+    maxValue: 50000,
+  },
+  high: {
+    minValue: 50000,
+    maxValue: Infinity,
+  },
+};
+
 const mapFilter = document.querySelector('.map__filters');
-const adForm = document.querySelector('.ad-form');
-const propertyTypeFilter = mapFilter.querySelector('#housing-type');
-const fieldsets = document.querySelectorAll('fieldset');
 const selectsFilter = mapFilter.querySelectorAll('select');
+const propertyTypeFilter = mapFilter.querySelector('#housing-type');
+const priceFilter = mapFilter.querySelector('#housing-price');
+// const roomsFilter = mapFilter.querySelector('#housing-rooms');
+// const guestsFilter = mapFilter.querySelector('#housing-guests');
+// const featuresFilter = mapFilter.querySelector('#housing-features');
+
+const adForm = document.querySelector('.ad-form');
+const fieldsets = document.querySelectorAll('fieldset');
 const avatarFile = adForm.querySelector('#avatar');
 const propertyType = adForm.querySelector('#type');
 const titleField = adForm.querySelector('#title');
-const priceType = adForm.querySelector('#price');
+const priceField = adForm.querySelector('#price');
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 const addressField = adForm.querySelector('#address');
@@ -42,15 +62,15 @@ const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
 const images = adForm.querySelector('#images');
-const adFormReset =  document.querySelector('.ad-form__reset');
+const adFormReset = document.querySelector('.ad-form__reset');
 
 const setDefaultAttributes = () => {
   avatarFile.setAttribute('accept', 'image/png, image/jpeg');
   titleField.setAttribute('required', '');
   titleField.setAttribute('minlength', MIN_LENGTH_TITLE);
   titleField.setAttribute('maxlength', MAX_LENGTH_TITLE);
-  priceType.setAttribute('required', '');
-  priceType.setAttribute('max', MAX_VALUE_PRICE);
+  priceField.setAttribute('required', '');
+  priceField.setAttribute('max', MAX_VALUE_PRICE);
   images.setAttribute('accept', 'image/png, image/jpeg');
   images.setAttribute('multiple', '');
   addressField.setAttribute('readonly', '');
@@ -92,8 +112,8 @@ const syncTypeAndPrice = () => {
   const offerType = propertyType.value;
   const offerPriceLabel = offersLabelsMap[offerType].price;
 
-  priceType.setAttribute('min', offerPriceLabel);
-  priceType.setAttribute('placeholder', offerPriceLabel);
+  priceField.setAttribute('min', offerPriceLabel);
+  priceField.setAttribute('placeholder', offerPriceLabel);
 };
 
 propertyType.addEventListener('change', () => {
@@ -132,14 +152,28 @@ const resetFormData = () => {
   setDefaultAttributes()
 };
 
-const isTypeFilterValue = (ad) => {
+const isTypeFilter = (ad) => {
   const selectedType = propertyTypeFilter.value;
   const adType = ad.offer.type;
-  return selectedType === DEFAULT_ANY_VALUE ? true : selectedType === adType ? true : false;
+  return selectedType === DEFAULT_ANY_VALUE ? true : selectedType === adType;
+};
+
+const isPriceFilter = (ad) => {
+  const selectedPriceRange = priceFilter.value;
+  const minBorderRange = priceFilterRanges[selectedPriceRange].minValue;
+  const maxBorderRange = priceFilterRanges[selectedPriceRange].maxValue;
+  const adPrice = ad.offer.price;
+
+  return selectedPriceRange === DEFAULT_ANY_VALUE ? true : (minBorderRange <= adPrice && adPrice < maxBorderRange);
 };
 
 const filterData = (ads) => {
-  return ads.filter(isTypeFilterValue);
+  return ads.forEach((ad) => {
+    if (!isTypeFilter && !isPriceFilter) {
+      console.log(ad);
+      ad.remove();
+    }
+  });
 };
 
-export {offersLabelsMap, adForm, adFormReset, propertyTypeFilter, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};
+export {offersLabelsMap, adForm, adFormReset, mapFilter, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};

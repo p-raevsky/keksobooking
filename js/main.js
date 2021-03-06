@@ -7,11 +7,12 @@ import './message.js';
 import {initMap, resetMainPin, defaultMapSettings, removePins, adPins, updateMap} from './map.js';
 import {getData, sendData} from './api.js';
 import {showAlert, isEscEvent, isEnterEvent} from './util.js';
-import {deactivateForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormReset, filterData, propertyTypeFilter} from './form.js';
+import {deactivateForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormReset, filterData, mapFilter} from './form.js';
 import {showSuccessMsg, showErrorMsg} from './message.js';
 
-let curentMap;
+const SIMILAR_AD_COUNT = 10;
 
+let curentMap;
 let curentData;
 
 const onDocumentKeydown = (evt) => {
@@ -79,8 +80,13 @@ adFormReset.addEventListener('click', (evt) => {
   resetPage();
 });
 
-propertyTypeFilter.addEventListener('change', () => {
-  const filteredData = filterData(curentData);
+mapFilter.addEventListener('change', (evt) => {
+  // debugger;
+  if (evt.target.matches('[id^="housing"]')) {
+    console.log(curentData);
+    const filteredData = filterData(curentData)
+      .slice(0, SIMILAR_AD_COUNT);
 
-  updateMap(filteredData, curentMap);
+    updateMap(filteredData, curentMap);
+  }
 });
