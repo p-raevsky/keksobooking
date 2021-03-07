@@ -1,4 +1,4 @@
-import {disableElements, enableElements, syncSelectValues} from './util.js';
+import {disableElements, enableElements, syncSelectValues, compareItems, isAny} from './util.js';
 
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
@@ -27,6 +27,7 @@ const offersLabelsMap = {
 };
 
 const priceFilterRanges = {
+  any: 'any',
   low: {
     minValue: 0,
     maxValue: 10000,
@@ -45,9 +46,9 @@ const mapFilter = document.querySelector('.map__filters');
 const selectsFilter = mapFilter.querySelectorAll('select');
 const propertyTypeFilter = mapFilter.querySelector('#housing-type');
 const priceFilter = mapFilter.querySelector('#housing-price');
-// const roomsFilter = mapFilter.querySelector('#housing-rooms');
-// const guestsFilter = mapFilter.querySelector('#housing-guests');
-// const featuresFilter = mapFilter.querySelector('#housing-features');
+const roomsFilter = mapFilter.querySelector('#housing-rooms');
+const guestsFilter = mapFilter.querySelector('#housing-guests');
+const featuresFilter = mapFilter.querySelector('#housing-features');
 
 const adForm = document.querySelector('.ad-form');
 const fieldsets = document.querySelectorAll('fieldset');
@@ -152,28 +153,53 @@ const resetFormData = () => {
   setDefaultAttributes()
 };
 
-const isTypeFilter = (ad) => {
-  const selectedType = propertyTypeFilter.value;
+const isTypeMatched = (ad) => {
   const adType = ad.offer.type;
-  return selectedType === DEFAULT_ANY_VALUE ? true : selectedType === adType;
+  const selectedType = propertyTypeFilter.value;
+
+  return isAny(selectedType, DEFAULT_ANY_VALUE) ? true : selectedType === adType;
 };
 
-const isPriceFilter = (ad) => {
+const isPriceMatched = (ad) => {
+  const adPrice = ad.offer.price;
   const selectedPriceRange = priceFilter.value;
   const minBorderRange = priceFilterRanges[selectedPriceRange].minValue;
   const maxBorderRange = priceFilterRanges[selectedPriceRange].maxValue;
-  const adPrice = ad.offer.price;
 
-  return selectedPriceRange === DEFAULT_ANY_VALUE ? true : (minBorderRange <= adPrice && adPrice < maxBorderRange);
+  return isAny(selectedPriceRange, DEFAULT_ANY_VALUE) ? true : (minBorderRange <= adPrice && adPrice < maxBorderRange);
+};
+
+const isRoomsMatched = (ad) => {
+  const roomsNumber = ad.offer.rooms;
+  const selectedRooms = roomsFilter.value;
+
+  return compareItems(selectedRooms, DEFAULT_ANY_VALUE, roomsNumber);
+};
+
+const isGuestsMatched = (ad) => {
+  const guestsNumber = ad.offer.guests;
+  const selectedGuests = guestsFilter.value;
+
+  return compareItems(selectedGuests, DEFAULT_ANY_VALUE, guestsNumber);
+}
+
+const getCheckedFeatures = () => {
+  const checkedFeatures = featuresFilter.querySelectorAll('input:checked');
+
+  return Array.from(checkedFeatures)
+    .map((element) => element.getAttribute('value'));
+};
+
+const isFeaturesMatched = (ad, checkedItems) => {
+  const offerFeatures = ad.offer.features;
+
+  return checkedItems.every((checkedItem) => offerFeatures.includes(checkedItem));
 };
 
 const filterData = (ads) => {
-  return ads.forEach((ad) => {
-    if (!isTypeFilter && !isPriceFilter) {
-      console.log(ad);
-      ad.remove();
-    }
-  });
+  const checkedFeatures = getCheckedFeatures();
+
+  return ads.filter((ad) => isTypeMatched(ad) && isPriceMatched(ad) && isRoomsMatched(ad) && isGuestsMatched(ad) && isFeaturesMatched(ad, checkedFeatures));
 };
 
 export {offersLabelsMap, adForm, adFormReset, mapFilter, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};

@@ -1,4 +1,8 @@
+/* global _:readonly */
+
 const ALERT_SHOW_TIME = 5000;
+const RERENDER_DELAY = 500;
+
 const alertValues = {
   zIndex: 1000,
   position: 'fixed',
@@ -59,4 +63,14 @@ const syncSelectValues = (firstTimeElement, secondTimeElement) => {
   firstTimeElement.value = secondTimeElement.value;
 };
 
-export {showAlert, isEscEvent, isEnterEvent, disableElements, enableElements, syncSelectValues};
+const isAny = (selectedItem, any) => selectedItem === any;
+
+const compareItems = (selectedItem, any, adItem) => {
+  const isMatched = Number(selectedItem) === adItem;
+
+  return isAny(selectedItem, any) || isMatched;
+};
+
+const delayBounce = (debouncedItem) => _.debounce(debouncedItem, RERENDER_DELAY);
+
+export {showAlert, isEscEvent, isEnterEvent, disableElements, enableElements, syncSelectValues, compareItems, isAny, delayBounce};
