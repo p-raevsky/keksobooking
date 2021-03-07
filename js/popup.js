@@ -2,11 +2,6 @@ import {offersLabelsMap} from './form.js';
 
 const PHOTO_WIDTH = 45;
 const PHOTO_HEIGHT = 40;
-const Z_INDEX_VALUE = 1000;
-
-const main = document.querySelector('main');
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 const createFeaturesFragment = (featuresArray) => {
   const fragment = document.createDocumentFragment();
@@ -103,22 +98,4 @@ const createSimilarAd = (element) => {
   return adElement;
 };
 
-const createSuccessMsg = () => {
-  const successElement = successTemplate.cloneNode(true);
-  successElement.style.zIndex = Z_INDEX_VALUE;
-
-  main.appendChild(successElement);
-
-  return successElement;
-};
-
-const createErrorMsg = () => {
-  const errorElement = errorTemplate.cloneNode(true);
-  errorElement.style.zIndex = Z_INDEX_VALUE;
-
-  main.appendChild(errorElement);
-
-  return errorElement;
-};
-
-export {createSimilarAd, createSuccessMsg, createErrorMsg};
+export {createSimilarAd};

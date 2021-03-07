@@ -1,5 +1,7 @@
 /* global L:readonly */
 
+import {createSimilarAd} from './popup.js';
+
 const FLOAT_NUMBER = 5;
 
 const defaultMapSettings = {
@@ -22,9 +24,9 @@ const defaultMapSettings = {
 
 const mainPinIcon = L.icon(defaultMapSettings.mainPin);
 
-const createMap = (onLoadMap) => {
+const createMap = (onMapLoad) => {
   return L.map('map-canvas')
-    .on('load', onLoadMap)
+    .on('load', onMapLoad)
     .setView(
       defaultMapSettings.coordinates,
       defaultMapSettings.scale,
@@ -64,7 +66,7 @@ const resetMainPin = () => {
 
 const markers = [];
 
-const createSimilarPins = (elements, createAd, map) => {
+const createSimilarPins = (elements, map) => {
   elements.forEach((element) => {
     const icon = L.icon(defaultMapSettings.marker);
 
@@ -81,7 +83,7 @@ const createSimilarPins = (elements, createAd, map) => {
     marker
       .addTo(map)
       .bindPopup(
-        createAd(element),
+        createSimilarAd(element),
         {
           keepInView: true,
         },
@@ -103,8 +105,8 @@ const adPins = (map) => {
   });
 };
 
-const initMap = (elements, onLoadMap, setPinCoordinates, createAd) => {
-  const map = createMap(onLoadMap);
+const initMap = (elements, onMapLoad, setPinCoordinates) => {
+  const map = createMap(onMapLoad);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -116,23 +118,18 @@ const initMap = (elements, onLoadMap, setPinCoordinates, createAd) => {
   marker.addTo(map);
 
   initMainPin(setPinCoordinates);
-  createSimilarPins(elements, createAd, map);
+  createSimilarPins(elements, map);
 
   return map;
 };
 
-const updateMap = (elements, createAd, map) => {
+const updateMap = (elements, map) => {
   map.setView(
     defaultMapSettings.coordinates,
     defaultMapSettings.scale,
   );
   removePins();
-
-  const markers = createSimilarPins(elements, createAd, map);
-
-  markers.forEach((marker) => {
-    marker.addTo(map);
-  });
+  createSimilarPins(elements, map);
 };
 
 export {defaultMapSettings, markers, initMap, resetMainPin, removePins, adPins, updateMap};
