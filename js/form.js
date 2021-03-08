@@ -62,7 +62,7 @@ const addressField = adForm.querySelector('#address');
 const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
-const images = adForm.querySelector('#images');
+const imageFile = adForm.querySelector('#images');
 const adFormReset = document.querySelector('.ad-form__reset');
 
 const setDefaultAttributes = () => {
@@ -72,8 +72,7 @@ const setDefaultAttributes = () => {
   titleField.setAttribute('maxlength', MAX_LENGTH_TITLE);
   priceField.setAttribute('required', '');
   priceField.setAttribute('max', MAX_VALUE_PRICE);
-  images.setAttribute('accept', 'image/png, image/jpeg');
-  images.setAttribute('multiple', '');
+  imageFile.setAttribute('accept', 'image/png, image/jpeg');
   addressField.setAttribute('readonly', '');
 };
 
@@ -150,7 +149,7 @@ const resetFormData = () => {
   mapFilter.reset();
   syncRoomsAndCapacity();
   syncTypeAndPrice();
-  setDefaultAttributes()
+  setDefaultAttributes();
 };
 
 const isTypeMatched = (ad) => {
@@ -202,4 +201,4 @@ const filterData = (ads) => {
   return ads.filter((ad) => isTypeMatched(ad) && isPriceMatched(ad) && isRoomsMatched(ad) && isGuestsMatched(ad) && isFeaturesMatched(ad, checkedFeatures));
 };
 
-export {offersLabelsMap, adForm, adFormReset, mapFilter, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};
+export {offersLabelsMap, adForm, adFormReset, mapFilter, avatarFile, imageFile, setDefaultAttributes, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};

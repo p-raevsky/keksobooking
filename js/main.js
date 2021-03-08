@@ -1,8 +1,19 @@
 import {initMap, resetMainPin, defaultMapSettings, removePins, adPins, updateMap} from './map.js';
 import {getData, sendData} from './api.js';
 import {showAlert, isEscEvent, isEnterEvent, delayBounce} from './util.js';
-import {deactivateForm, activateForm, updateCurentPinCoordinates, resetFormData, adForm, adFormReset, filterData, mapFilter} from './form.js';
+import {
+  setDefaultAttributes,
+  deactivateForm,
+  activateForm,
+  updateCurentPinCoordinates,
+  resetFormData,
+  adForm,
+  adFormReset,
+  filterData,
+  mapFilter
+} from './form.js';
 import {showSuccessMsg, showErrorMsg} from './message.js';
+import { resetPhotoPreview } from './upload-picture.js';
 
 const SIMILAR_AD_COUNT = 10;
 
@@ -32,6 +43,7 @@ const closeMsg = () => {
 };
 
 const onAdFormSubmit = (evt) => {
+
   evt.preventDefault();
 
   const formData = new FormData(evt.target);
@@ -63,9 +75,18 @@ const resetPage = () => {
   );
   removePins();
   adPins(curentMap);
+  resetPhotoPreview();
 };
 
+const onMapFilterChange = delayBounce(() => {
+  const filteredData = filterData(curentData)
+    .slice(0, SIMILAR_AD_COUNT);
+
+  updateMap(filteredData, curentMap);
+});
+
 loadMap();
+setDefaultAttributes();
 
 adForm.addEventListener('submit', onAdFormSubmit);
 
@@ -73,12 +94,5 @@ adFormReset.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetPage();
 });
-
-const onMapFilterChange = (delayBounce(() => {
-  const filteredData = filterData(curentData)
-    .slice(0, SIMILAR_AD_COUNT);
-
-  updateMap(filteredData, curentMap);
-}));
 
 mapFilter.addEventListener('change', onMapFilterChange);
