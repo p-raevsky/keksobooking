@@ -1,4 +1,4 @@
-/* global _:readonly */
+import {debounce} from 'lodash';
 
 const ALERT_SHOW_TIME = 5000;
 const RERENDER_DELAY = 500;
@@ -71,6 +71,6 @@ const compareItems = (selectedItem, any, adItem) => {
   return isAny(selectedItem, any) || isMatched;
 };
 
-const delayBounce = (debouncedItem) => _.debounce(debouncedItem, RERENDER_DELAY);
+const delayBounce = (debouncedItem) => debounce(debouncedItem, RERENDER_DELAY);
 
 export {showAlert, isEscEvent, isEnterEvent, disableElements, enableElements, syncSelectValues, compareItems, isAny, delayBounce};

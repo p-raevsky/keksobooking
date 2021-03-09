@@ -2,7 +2,6 @@ import {initMap, resetMainPin, defaultMapSettings, removePins, adPins, updateMap
 import {getData, sendData} from './api.js';
 import {showAlert, isEscEvent, isEnterEvent, delayBounce} from './util.js';
 import {
-  setDefaultAttributes,
   deactivateForm,
   activateForm,
   updateCurentPinCoordinates,
@@ -10,7 +9,8 @@ import {
   adForm,
   adFormReset,
   filterData,
-  mapFilter
+  mapFilter,
+  syncFormFields
 } from './form.js';
 import {showSuccessMsg, showErrorMsg} from './message.js';
 import { resetPhotoPreview } from './upload-picture.js';
@@ -86,7 +86,7 @@ const onMapFilterChange = delayBounce(() => {
 });
 
 loadMap();
-setDefaultAttributes();
+syncFormFields();
 
 adForm.addEventListener('submit', onAdFormSubmit);
 

@@ -120,6 +120,12 @@ propertyType.addEventListener('change', () => {
   syncTypeAndPrice();
 });
 
+const syncFormFields = () => {
+  setDefaultAttributes();
+  syncRoomsAndCapacity();
+  syncTypeAndPrice();
+};
+
 timeIn.addEventListener('change', () => {
   syncSelectValues(timeOut, timeIn);
 });
@@ -147,9 +153,10 @@ const activateForm = () => {
 const resetFormData = () => {
   adForm.reset();
   mapFilter.reset();
+
+  setDefaultAttributes();
   syncRoomsAndCapacity();
   syncTypeAndPrice();
-  setDefaultAttributes();
 };
 
 const isTypeMatched = (ad) => {
@@ -201,4 +208,4 @@ const filterData = (ads) => {
   return ads.filter((ad) => isTypeMatched(ad) && isPriceMatched(ad) && isRoomsMatched(ad) && isGuestsMatched(ad) && isFeaturesMatched(ad, checkedFeatures));
 };
 
-export {offersLabelsMap, adForm, adFormReset, mapFilter, avatarFile, imageFile, setDefaultAttributes, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};
+export {offersLabelsMap, adForm, adFormReset, mapFilter, avatarFile, imageFile, setDefaultAttributes, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData, syncFormFields};
