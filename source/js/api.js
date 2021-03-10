@@ -6,9 +6,7 @@ const getData = (onFail) => {
   return fetch(GET_DATA_URL)
     .then((response) => response.json())
     .then((data) => data)
-    .catch(() => {
-      onFail(ON_FAIL_MSG);
-    });
+    .catch(() => onFail(ON_FAIL_MSG));
 };
 
 const sendData = (onSuccess, onFail, data) => {
@@ -26,9 +24,7 @@ const sendData = (onSuccess, onFail, data) => {
         onFail();
       }
     })
-    .catch(() => {
-      onFail();
-    });
+    .catch(() => onFail());
 };
 
 export {getData, sendData};

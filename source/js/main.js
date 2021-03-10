@@ -1,6 +1,21 @@
-import {initMap, resetMainPin, defaultMapSettings, removePins, adPins, updateMap} from './map.js';
-import {getData, sendData} from './api.js';
-import {showAlert, isEscEvent, isEnterEvent, delayBounce} from './util.js';
+import {
+  initMap,
+  resetMainPin,
+  defaultMapSettings,
+  removePins,
+  adPins,
+  updateMap
+} from './map.js';
+import {
+  getData,
+  sendData
+} from './api.js';
+import {
+  showAlert,
+  isEscEvent,
+  isEnterEvent,
+  delayBounce
+} from './util.js';
 import {
   deactivateForm,
   activateForm,
@@ -12,8 +27,11 @@ import {
   mapFilter,
   syncFormFields
 } from './form.js';
-import {showSuccessMsg, showErrorMsg} from './message.js';
-import { resetPhotoPreview } from './upload-picture.js';
+import {
+  showSuccessMsg,
+  showErrorMsg
+} from './message.js';
+import {resetPhotoPreview} from './upload-picture.js';
 
 const SIMILAR_AD_COUNT = 10;
 

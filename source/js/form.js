@@ -1,4 +1,10 @@
-import {disableElements, enableElements, syncSelectValues, compareItems, isAny} from './util.js';
+import {
+  disableElements,
+  enableElements,
+  syncSelectValues,
+  compareItems,
+  isAny
+} from './util.js';
 
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
@@ -76,9 +82,7 @@ const setDefaultAttributes = () => {
   addressField.setAttribute('readonly', '');
 };
 
-const updateCurentPinCoordinates = (x, y) => {
-  addressField.value = `${x}, ${y}`;
-};
+const updateCurentPinCoordinates = (x, y) => addressField.value = `${x}, ${y}`;
 
 const syncRoomsAndCapacity = () => {
   const roomsOption = Number(roomsNumber.value);
@@ -208,4 +212,18 @@ const filterData = (ads) => {
   return ads.filter((ad) => isTypeMatched(ad) && isPriceMatched(ad) && isRoomsMatched(ad) && isGuestsMatched(ad) && isFeaturesMatched(ad, checkedFeatures));
 };
 
-export {offersLabelsMap, adForm, adFormReset, mapFilter, avatarFile, imageFile, setDefaultAttributes, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData, syncFormFields};
+export {
+  offersLabelsMap,
+  adForm,
+  adFormReset,
+  mapFilter,
+  avatarFile,
+  imageFile,
+  setDefaultAttributes,
+  activateForm,
+  updateCurentPinCoordinates,
+  deactivateForm,
+  resetFormData,
+  filterData,
+  syncFormFields
+};

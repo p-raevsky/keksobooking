@@ -5,6 +5,7 @@ const PHOTO_HEIGHT = 40;
 
 const createFeaturesFragment = (featuresArray) => {
   const fragment = document.createDocumentFragment();
+
   featuresArray.forEach((feature) => {
     const item = document.createElement('li');
     item.className = `popup__feature popup__feature--${feature}`;
@@ -16,6 +17,7 @@ const createFeaturesFragment = (featuresArray) => {
 
 const createPhotosFragment = (photoSrcArray) => {
   const fragment = document.createDocumentFragment();
+
   photoSrcArray.forEach((photoSrc) => {
     const item = document.createElement('img');
     item.className = 'popup__photo';

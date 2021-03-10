@@ -13,9 +13,7 @@ const uploadPicture = (inputFile, preview) => {
 
   const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((ending) => {
-    return fileName.endsWith(ending);
-  });
+  const matches = FILE_TYPES.some((ending) => fileName.endsWith(ending));
 
   if (matches) {
     const reader = new FileReader();

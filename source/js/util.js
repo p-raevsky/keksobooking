@@ -37,15 +37,11 @@ const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-}
-
-const isEscEvent = (evt) => {
-  return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-const isEnterEvent = (evt) => {
-  return evt.key === 'Enter';
-};
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+const isEnterEvent = (evt) => evt.key === 'Enter';
 
 const disableElements = (elements) => {
   elements.forEach((element) => {
@@ -59,9 +55,7 @@ const enableElements = (elements) => {
   });
 };
 
-const syncSelectValues = (firstTimeElement, secondTimeElement) => {
-  firstTimeElement.value = secondTimeElement.value;
-};
+const syncSelectValues = (firstTimeElement, secondTimeElement) => firstTimeElement.value = secondTimeElement.value;
 
 const isAny = (selectedItem, any) => selectedItem === any;
 
@@ -73,4 +67,14 @@ const compareItems = (selectedItem, any, adItem) => {
 
 const delayBounce = (debouncedItem) => debounce(debouncedItem, RERENDER_DELAY);
 
-export {showAlert, isEscEvent, isEnterEvent, disableElements, enableElements, syncSelectValues, compareItems, isAny, delayBounce};
+export {
+  showAlert,
+  isEscEvent,
+  isEnterEvent,
+  disableElements,
+  enableElements,
+  syncSelectValues,
+  compareItems,
+  isAny,
+  delayBounce
+};
