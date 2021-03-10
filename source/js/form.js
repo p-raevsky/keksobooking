@@ -1,4 +1,10 @@
-import {disableElements, enableElements, syncSelectValues, compareItems, isAny} from './util.js';
+import {
+  disableElements,
+  enableElements,
+  syncSelectValues,
+  compareItems,
+  isAny
+} from './util.js';
 
 const MIN_LENGTH_TITLE = 30;
 const MAX_LENGTH_TITLE = 100;
@@ -62,7 +68,7 @@ const addressField = adForm.querySelector('#address');
 const roomsNumber = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const capacityOptions = capacity.querySelectorAll('option');
-const images = adForm.querySelector('#images');
+const imageFile = adForm.querySelector('#images');
 const adFormReset = document.querySelector('.ad-form__reset');
 
 const setDefaultAttributes = () => {
@@ -72,14 +78,11 @@ const setDefaultAttributes = () => {
   titleField.setAttribute('maxlength', MAX_LENGTH_TITLE);
   priceField.setAttribute('required', '');
   priceField.setAttribute('max', MAX_VALUE_PRICE);
-  images.setAttribute('accept', 'image/png, image/jpeg');
-  images.setAttribute('multiple', '');
+  imageFile.setAttribute('accept', 'image/png, image/jpeg');
   addressField.setAttribute('readonly', '');
 };
 
-const updateCurentPinCoordinates = (x, y) => {
-  addressField.value = `${x}, ${y}`;
-};
+const updateCurentPinCoordinates = (x, y) => addressField.value = `${x}, ${y}`;
 
 const syncRoomsAndCapacity = () => {
   const roomsOption = Number(roomsNumber.value);
@@ -121,6 +124,12 @@ propertyType.addEventListener('change', () => {
   syncTypeAndPrice();
 });
 
+const syncFormFields = () => {
+  setDefaultAttributes();
+  syncRoomsAndCapacity();
+  syncTypeAndPrice();
+};
+
 timeIn.addEventListener('change', () => {
   syncSelectValues(timeOut, timeIn);
 });
@@ -148,9 +157,10 @@ const activateForm = () => {
 const resetFormData = () => {
   adForm.reset();
   mapFilter.reset();
+
+  setDefaultAttributes();
   syncRoomsAndCapacity();
   syncTypeAndPrice();
-  setDefaultAttributes()
 };
 
 const isTypeMatched = (ad) => {
@@ -202,4 +212,18 @@ const filterData = (ads) => {
   return ads.filter((ad) => isTypeMatched(ad) && isPriceMatched(ad) && isRoomsMatched(ad) && isGuestsMatched(ad) && isFeaturesMatched(ad, checkedFeatures));
 };
 
-export {offersLabelsMap, adForm, adFormReset, mapFilter, activateForm, updateCurentPinCoordinates, deactivateForm, resetFormData, filterData};
+export {
+  offersLabelsMap,
+  adForm,
+  adFormReset,
+  mapFilter,
+  avatarFile,
+  imageFile,
+  setDefaultAttributes,
+  activateForm,
+  updateCurentPinCoordinates,
+  deactivateForm,
+  resetFormData,
+  filterData,
+  syncFormFields
+};

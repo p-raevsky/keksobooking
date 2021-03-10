@@ -1,4 +1,5 @@
-/* global L:readonly */
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 import {createSimilarAd} from './popup.js';
 
@@ -132,4 +133,12 @@ const updateMap = (elements, map) => {
   createSimilarPins(elements, map);
 };
 
-export {defaultMapSettings, markers, initMap, resetMainPin, removePins, adPins, updateMap};
+export {
+  defaultMapSettings,
+  markers,
+  initMap,
+  resetMainPin,
+  removePins,
+  adPins,
+  updateMap
+};

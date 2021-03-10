@@ -1,4 +1,4 @@
-/* global _:readonly */
+import {debounce} from 'lodash';
 
 const ALERT_SHOW_TIME = 5000;
 const RERENDER_DELAY = 500;
@@ -37,15 +37,11 @@ const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-}
-
-const isEscEvent = (evt) => {
-  return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-const isEnterEvent = (evt) => {
-  return evt.key === 'Enter';
-};
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+const isEnterEvent = (evt) => evt.key === 'Enter';
 
 const disableElements = (elements) => {
   elements.forEach((element) => {
@@ -59,9 +55,7 @@ const enableElements = (elements) => {
   });
 };
 
-const syncSelectValues = (firstTimeElement, secondTimeElement) => {
-  firstTimeElement.value = secondTimeElement.value;
-};
+const syncSelectValues = (firstTimeElement, secondTimeElement) => firstTimeElement.value = secondTimeElement.value;
 
 const isAny = (selectedItem, any) => selectedItem === any;
 
@@ -71,6 +65,16 @@ const compareItems = (selectedItem, any, adItem) => {
   return isAny(selectedItem, any) || isMatched;
 };
 
-const delayBounce = (debouncedItem) => _.debounce(debouncedItem, RERENDER_DELAY);
+const delayBounce = (debouncedItem) => debounce(debouncedItem, RERENDER_DELAY);
 
-export {showAlert, isEscEvent, isEnterEvent, disableElements, enableElements, syncSelectValues, compareItems, isAny, delayBounce};
+export {
+  showAlert,
+  isEscEvent,
+  isEnterEvent,
+  disableElements,
+  enableElements,
+  syncSelectValues,
+  compareItems,
+  isAny,
+  delayBounce
+};
