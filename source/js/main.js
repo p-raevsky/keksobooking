@@ -28,8 +28,9 @@ import {
   syncFormFields
 } from './form.js';
 import {
-  showSuccessMsg,
-  showErrorMsg
+  successTemplate,
+  errorTemplate,
+  showMsg
 } from './message.js';
 import {resetPhotoPreview} from './upload-picture.js';
 
@@ -68,10 +69,10 @@ const onAdFormSubmit = (evt) => {
 
   sendData(
     () => {
-      showSuccessMsg(closeMsg, onDocumentKeydown);
+      showMsg(closeMsg, onDocumentKeydown, successTemplate);
       resetPage();
     },
-    () => showErrorMsg(closeMsg, onDocumentKeydown),
+    () => showMsg(closeMsg, onDocumentKeydown, errorTemplate),
     formData,
   );
 };
