@@ -8,7 +8,7 @@
     "url": "git@github.com:p-raevsky/keksobooking.git"
   },
   "bugs": {
-    "url": "git@github.com:p-raevsky/keksobooking.git/issues"
+    "url": "https://github.com/p-raevsky/keksobooking.git/issues"
   },
   "devDependencies": {
     "browser-sync": "2.26.14",
