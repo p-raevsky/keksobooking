@@ -30,7 +30,7 @@
     "start": "browser-sync start --server \"build/\" --no-ui --files \"source/**/*.js\"",
     "test": "eslint source/js/",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d source"
+    "deploy": "gh-pages -d build"
   },
   "engines": {
     "node": ">=12.0.0"
